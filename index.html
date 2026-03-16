@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مركز عمليات الشرطة - FiveM</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Rajdhani:wght@500;600;700&display=swap');
   :root {
     --bg-deep:#060a10;--bg-panel:#0c1220;--bg-card:#111827;--bg-hover:#1a2535;
     --border:#1e3a5f;--accent-blue:#3b82f6;--accent-cyan:#06b6d4;--accent-gold:#f59e0b;
@@ -27,7 +27,7 @@
   /* HEADER */
   #header{grid-column:1/-1;background:linear-gradient(90deg,#060d1a,#0d0a18 50%,#060d1a);border-bottom:1px solid var(--brand-border);display:flex;align-items:center;padding:0 16px;gap:10px;position:relative;}
   #header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--brand),transparent);}
-  .hdr-logo{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--brand);letter-spacing:3px;}
+  .hdr-logo{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--brand);letter-spacing:3px;}
   .hdr-div{width:1px;height:22px;background:var(--brand-border);}
   .hdr-title{font-size:14px;font-weight:700;}
   .hdr-right{margin-right:auto;display:flex;align-items:center;gap:8px;}
@@ -82,7 +82,7 @@
   .unit-card.unassigned{border-color:rgba(239,68,68,.4);}
   .unit-card.unassigned .ucode-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-left:2px;flex-shrink:0;}
   .unit-card:not(.unassigned) .ucode-dot{display:none;}
-  .ucode{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;min-width:34px;}
+  .ucode{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;min-width:34px;}
   .ucode.officer{color:var(--accent-gold);}
   .ucode.nco{color:var(--accent-cyan);}
   .ucode.command{color:var(--brand);}
@@ -102,7 +102,7 @@
   .stat-item{display:flex;align-items:center;gap:8px;}
   .stat-info{display:flex;flex-direction:column;}
   .stat-lbl{font-size:10px;color:var(--text-muted);}
-  .stat-val{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;line-height:1;}
+  .stat-val{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;line-height:1;}
   .sv-speed{color:var(--accent-blue);}
   .sv-bike{color:var(--accent-gold);}
   .sv-raptor{color:var(--accent-cyan);}
@@ -133,7 +133,7 @@
   .cases-list{display:flex;flex-direction:column;gap:1px;padding:5px;}
   .case-item{background:var(--bg-card);border:1px solid var(--border);border-radius:5px;padding:7px 11px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:all .2s;}
   .case-item:hover{border-color:var(--brand);background:var(--brand-dim);}
-  .case-wave{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--brand);min-width:26px;text-align:center;}
+  .case-wave{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:var(--brand);min-width:26px;text-align:center;}
   .case-name{font-size:13px;font-weight:600;}
   .case-cnt{margin-right:auto;font-size:10px;color:var(--text-muted);background:var(--brand-dim);border:1px solid var(--brand-border);padding:1px 7px;border-radius:8px;}
 
@@ -166,7 +166,7 @@
   .uchip:hover{border-color:var(--brand);background:var(--brand-dim);}
   .uchip.partner{border-style:dashed;border-color:var(--brand);}
   .uchip.highlight{outline:2px solid var(--brand);outline-offset:1px;}
-  .ccode{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;}
+  .ccode{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;}
   .ccode.officer{color:var(--accent-gold);}
   .ccode.nco{color:var(--accent-cyan);}
   .ccode.command{color:var(--brand);}
@@ -184,7 +184,7 @@
   .note-meta{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--text-muted);}
   .note-title{font-size:12px;font-weight:700;color:var(--brand);}
   .note-body{font-size:11px;color:var(--text-dim);line-height:1.5;}
-  .note-plate{display:inline-flex;align-items:center;gap:4px;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.35);border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Orbitron',sans-serif;color:var(--accent-cyan);font-weight:700;margin-top:2px;}
+  .note-plate{display:inline-flex;align-items:center;gap:4px;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.35);border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Rajdhani',sans-serif;color:var(--accent-cyan);font-weight:700;margin-top:2px;}
   .note-tag{font-size:9px;padding:1px 6px;border-radius:8px;font-weight:700;background:var(--brand-dim);color:var(--brand);border:1px solid var(--brand-border);}
   .note-del{position:absolute;left:8px;top:8px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;opacity:0;transition:opacity .2s;}
   .note-item:hover .note-del{opacity:1;}
@@ -212,7 +212,7 @@
   .ctx-item.danger{color:var(--red);}
   .ctx-item.danger:hover{background:rgba(239,68,68,.1);color:var(--red);}
   .ctx-div{height:1px;background:var(--brand-border);margin:3px 0;}
-  .wbadge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;border:2px solid var(--brand);color:var(--brand);background:var(--brand-dim);cursor:pointer;transition:all .2s;}
+  .wbadge{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;border:2px solid var(--brand);color:var(--brand);background:var(--brand-dim);cursor:pointer;transition:all .2s;}
   .wbadge:hover,.wbadge.sel{background:var(--brand);color:#fff;box-shadow:0 0 12px var(--brand-glow);}
   .wbadge.dis{opacity:.2;cursor:not-allowed;border-color:var(--text-muted);color:var(--text-muted);background:transparent;}
   .wbadge.dis:hover{background:transparent;color:var(--text-muted);box-shadow:none;}
@@ -226,7 +226,7 @@
   #copy-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px var(--brand-glow);}
   #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(16px);padding:9px 18px;border-radius:7px;font-weight:700;font-size:12px;z-index:999;opacity:0;transition:all .28s;border:1px solid transparent;}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-  .drag-ghost{position:fixed;pointer-events:none;z-index:9999;background:var(--bg-card);border:1px solid var(--brand);border-radius:5px;padding:4px 9px;font-size:11px;font-family:'Orbitron',sans-serif;font-weight:700;color:var(--brand);box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;transition:opacity .1s;}
+  .drag-ghost{position:fixed;pointer-events:none;z-index:9999;background:var(--bg-card);border:1px solid var(--brand);border-radius:5px;padding:4px 9px;font-size:14px;font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--brand);box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;transition:opacity .1s;}
   .drag-ghost.vis{opacity:.9;}
   @keyframes hlPulse{0%,100%{box-shadow:0 0 0 0 var(--brand-glow);}50%{box-shadow:0 0 0 4px transparent;}}
   .uchip.highlight{animation:hlPulse 1s ease 3;}
@@ -426,8 +426,9 @@ function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}cat
 function loadState(){try{const s=localStorage.getItem(LS_KEY);return s?JSON.parse(s):null;}catch(e){return null;}}
 function uid(){return Math.random().toString(36).slice(2,9);}
 
-function isOfficer(c){return parseInt(c)>=100&&parseInt(c)<=299;}
-function isNCO(c){return parseInt(c)>=300;}
+// ضابط: 100–199 | ضابط صف: 200–399
+function isOfficer(c){return parseInt(c)>=100&&parseInt(c)<=199;}
+function isNCO(c){return parseInt(c)>=200&&parseInt(c)<=399;}
 function getRankClass(c){const n=parseInt(c);if(n<=103)return'command';if(n<=199)return'officer';return'nco';}
 function codeClass(c){return getRankClass(c);}
 function getTypeLabel(t){return{car:'مركبة',speed:'سبيد يونت',bike:'دباب',raptor:'رابتر'}[t]||'مركبة';}
@@ -927,7 +928,7 @@ function openPlateModal(cid){
   modal.innerHTML+=`
     <div class="plate-input-box">
       <div class="m-lbl">لوحة المركبة</div>
-      <input class="inp" id="plate-val" placeholder="مثال: أ ب ج 1234" style="margin-bottom:8px;text-align:center;font-size:15px;font-family:'Orbitron',sans-serif;letter-spacing:2px;">
+      <input class="inp" id="plate-val" placeholder="مثال: أ ب ج 1234" style="margin-bottom:8px;text-align:center;font-size:15px;font-family:'Rajdhani',sans-serif;letter-spacing:2px;">
       <div style="font-size:11px;color:var(--text-muted)">الحالة: <b style="color:var(--brand)">${label} م${c.wave}</b></div>
     </div>
     <div class="m-acts">
