@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مركز عمليات الشرطة - FiveM</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap');
+  :root {
+    --bg-deep:#060a10;--bg-panel:#0c1220;--bg-card:#111827;--bg-hover:#1a2535;
+    --border:#1e3a5f;--accent-blue:#3b82f6;--accent-cyan:#06b6d4;--accent-gold:#f59e0b;
+    --text-main:#e2e8f0;--text-muted:#64748b;--text-dim:#94a3b8;
+    --green:#22c55e;--green-dark:#166534;--orange:#f97316;--orange-dark:#7c2d12;
+    --purple:#a855f7;--purple-dark:#581c87;--red:#ef4444;--red-dark:#7f1d1d;
+    --scrollbar:#1e3a5f;
+    --sec-free-bg:rgba(34,197,94,0.09);--sec-free-bd:rgba(34,197,94,0.3);
+    --sec-case-bg:rgba(249,115,22,0.09);--sec-case-bd:rgba(249,115,22,0.3);
+    --sec-jail-bg:rgba(168,85,247,0.09);--sec-jail-bd:rgba(168,85,247,0.3);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Cairo',sans-serif;background:var(--bg-deep);color:var(--text-main);height:100vh;overflow:hidden;user-select:none;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 10%,rgba(59,130,246,.06),transparent 50%),radial-gradient(ellipse at 85% 90%,rgba(6,182,212,.04),transparent 50%);pointer-events:none;z-index:0;}
+  ::-webkit-scrollbar{width:4px;height:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:3px;}
+  #app{display:grid;grid-template-columns:268px 1fr;grid-template-rows:52px 1fr;height:100vh;position:relative;z-index:1;}
+  /* HEADER */
+  #header{grid-column:1/-1;background:linear-gradient(90deg,#060d1a,#0c1a2e 50%,#060d1a);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;position:relative;}
+  #header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent-blue),transparent);}
+  .hdr-logo{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:rgb(117, 48, 197);letter-spacing:3px;}
+  .hdr-div{width:1px;height:22px;background:var(--border);}
+  .hdr-title{font-size:14px;font-weight:700;}
+  .hdr-right{margin-right:auto;display:flex;align-items:center;gap:8px;}
+  .ops-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:5px;padding:3px 10px;font-size:11px;color:var(--text-dim);cursor:pointer;transition:all .2s;}
+  .ops-pill:hover{border-color:var(--accent-blue);color:var(--text-main);}
+  .ops-pill b{color:var(--accent-gold);font-weight:700;}
+  /* SEARCH BAR in header */
+  .hdr-search{position:relative;display:flex;align-items:center;}
+  .hdr-search input{background:var(--bg-card);border:1px solid var(--border);border-radius:5px;color:var(--text-main);font-family:'Cairo',sans-serif;font-size:11px;padding:4px 28px 4px 8px;outline:none;transition:border-color .2s;width:150px;}
+  .hdr-search input:focus{border-color:var(--accent-blue);width:180px;}
+  .hdr-search input::placeholder{color:var(--text-muted);}
+  .hdr-search .srch-icon{position:absolute;left:7px;color:var(--text-muted);font-size:11px;pointer-events:none;}
+  .search-results-popup{position:absolute;top:100%;right:0;margin-top:4px;background:var(--bg-panel);border:1px solid var(--border);border-radius:7px;min-width:220px;max-height:260px;overflow-y:auto;z-index:300;box-shadow:0 14px 38px rgba(0,0,0,.55);}
+  .srp-item{padding:7px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(30,58,95,.4);transition:background .1s;}
+  .srp-item:last-child{border-bottom:none;}
+  .srp-item:hover{background:var(--bg-hover);}
+  .srp-loc{font-size:10px;color:var(--text-muted);margin-right:auto;}
+  .srp-empty{padding:10px 12px;font-size:11px;color:var(--text-muted);text-align:center;}
+  /* SIDEBAR */
+  #sidebar{background:var(--bg-panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+  .sb-hdr{padding:9px 12px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;justify-content:space-between;}
+  .cnt-badge{background:var(--accent-blue);color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;}
+  .cnt-badge-red{background:var(--red-dark);color:var(--red);border:1px solid var(--red);border-radius:10px;padding:1px 7px;font-size:10px;}
+  #add-form{padding:8px 10px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:6px;}
+  .frow{display:flex;gap:6px;}
+  .inp{background:var(--bg-card);border:1px solid var(--border);border-radius:5px;color:var(--text-main);font-family:'Cairo',sans-serif;font-size:12px;padding:5px 8px;outline:none;transition:border-color .2s;width:100%;}
+  .inp:focus{border-color:var(--accent-blue);}
+  .inp::placeholder{color:var(--text-muted);}
+  select.inp{cursor:pointer;}
+  select.inp option{background:var(--bg-card);}
+
+  .btn{background:var(--accent-blue);color:#fff;border:none;border-radius:5px;padding:5px 11px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+  .btn:hover{filter:brightness(1.15);transform:translateY(-1px);}
+  .btn:active{transform:translateY(0);}
+  .btn-sm{padding:3px 8px;font-size:11px;}
+  .btn-danger{background:var(--red-dark);border:1px solid var(--red);color:var(--red);}
+  .btn-danger:hover{background:rgba(239,68,68,.2);}
+  .btn-success{background:var(--green-dark);border:1px solid var(--green);color:var(--green);}
+  .btn-success:hover{background:rgba(34,197,94,.2);}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-dim);}
+  .btn-ghost:hover{border-color:var(--accent-blue);color:var(--text-main);background:var(--bg-hover);}
+  .btn-orange{background:var(--orange-dark);border:1px solid var(--orange);color:var(--orange);}
+  .btn-orange:hover{background:rgba(249,115,22,.2);}
+  #units-list{flex:1;overflow-y:auto;padding:7px;display:flex;flex-direction:column;gap:3px;}
+  .unit-card{background:var(--bg-card);border:1px solid var(--border);border-radius:5px;padding:6px 9px;display:flex;align-items:center;gap:7px;cursor:grab;transition:all .2s;}
+  .unit-card:hover{border-color:var(--accent-blue);background:var(--bg-hover);}
+  /* unassigned = red indicator */
+  .unit-card.unassigned{border-color:rgba(239,68,68,.4);}
+  .unit-card.unassigned .ucode-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-left:2px;flex-shrink:0;}
+  .unit-card:not(.unassigned) .ucode-dot{display:none;}
+  .ucode{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;min-width:34px;}
+  .ucode.officer{color:var(--accent-gold);}
+  .ucode.nco{color:var(--accent-cyan);}
+  .ucode.command{color:var(--red);}
+  .tbadge{font-size:9px;padding:1px 5px;border-radius:8px;font-weight:700;}
+  .b-speed{background:rgba(59,130,246,.18);color:var(--accent-blue);border:1px solid rgba(59,130,246,.4);}
+  .b-bike{background:rgba(245,158,11,.18);color:var(--accent-gold);border:1px solid rgba(245,158,11,.4);}
+  .b-raptor{background:rgba(6,182,212,.18);color:var(--accent-cyan);border:1px solid rgba(6,182,212,.4);}
+  .udel{margin-right:auto;opacity:0;transition:opacity .2s;background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;padding:0 2px;}
+  .unit-card:hover .udel{opacity:1;}
+  #sb-ctrl{padding:8px 10px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;}
+  /* MAIN */
+  #main{overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
+  /* STATS */
+  .stats-strip{background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+  .stat-ttl{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;}
+  .sdiv{width:1px;height:28px;background:var(--border);}
+  .stat-item{display:flex;align-items:center;gap:8px;}
+  .stat-info{display:flex;flex-direction:column;}
+  .stat-lbl{font-size:10px;color:var(--text-muted);}
+  .stat-val{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;line-height:1;}
+  .sv-speed{color:var(--accent-blue);}
+  .sv-bike{color:var(--accent-gold);}
+  .sv-raptor{color:var(--accent-cyan);}
+  /* COMMAND PANEL */
+  #command-panel{background:var(--bg-panel);border:1px solid rgba(245,158,11,.25);border-radius:8px;overflow:hidden;}
+  .command-hdr{padding:9px 14px;border-bottom:1px solid rgba(245,158,11,.2);display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+  .command-hdr-title{color:var(--text-dim);}
+  .cmd-cnt{font-size:10px;background:rgba(245,158,11,.15);color:var(--accent-gold);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:1px 7px;}
+  .cmd-units{display:flex;flex-wrap:wrap;gap:4px;min-height:44px;background:rgba(245,158,11,.03);border:1px dashed rgba(245,158,11,.2);border-radius:5px;padding:7px;}
+  .cmd-units.drag-over{outline:2px dashed var(--accent-blue);outline-offset:2px;}
+  .cmd-chip{display:flex;align-items:center;gap:4px;background:var(--bg-card);border-radius:4px;padding:3px 8px;border:1px solid var(--border);cursor:pointer;transition:all .15s;font-size:11px;}
+  .cmd-chip:hover{border-color:var(--accent-blue);background:var(--bg-hover);}
+  .cmd-empty{font-size:10px;color:var(--text-muted);font-style:italic;padding:2px 3px;}
+  /* CASES */
+  #cases-panel{background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .panel-hdr{padding:9px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;}
+  .cases-list{display:flex;flex-direction:column;gap:1px;padding:5px;}
+  .case-item{background:var(--bg-card);border:1px solid var(--border);border-radius:5px;padding:7px 11px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:all .2s;}
+  .case-item:hover{border-color:var(--orange);background:rgba(249,115,22,.06);}
+  .case-wave{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--orange);min-width:26px;text-align:center;}
+  .case-name{font-size:13px;font-weight:600;}
+  .case-cnt{margin-right:auto;font-size:10px;color:var(--text-muted);background:var(--bg-hover);padding:1px 7px;border-radius:8px;}
+  /* ZONES */
+  #zones-outer{display:grid;grid-template-columns:180px 1fr;gap:10px;align-items:start;}
+  .heli-col{display:flex;flex-direction:column;gap:6px;}
+  .heli-title{font-size:12px;font-weight:700;color:var(--text-dim);display:flex;align-items:center;gap:6px;}
+  .zdot{width:8px;height:8px;border-radius:50%;}
+  .heli-drop{background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.25);border-radius:7px;min-height:70px;padding:8px;display:flex;flex-direction:column;gap:4px;}
+  .heli-drop.drag-over{outline:2px dashed var(--accent-blue);outline-offset:2px;}
+
+  #zones-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:start;}
+  .zone-wrapper{display:flex;flex-direction:column;gap:4px;}
+  .zone-name-row{font-size:12px;font-weight:700;color:var(--text-dim);padding:0 2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+  .zone-vehicle-tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:1px;}
+  .zone-vtag{font-size:9px;padding:1px 5px;border-radius:8px;font-weight:700;}
+  .zone-vtag-speed{background:rgba(59,130,246,.18);color:var(--accent-blue);border:1px solid rgba(59,130,246,.3);}
+  .zone-vtag-bike{background:rgba(245,158,11,.18);color:var(--accent-gold);border:1px solid rgba(245,158,11,.3);}
+  .zone-vtag-raptor{background:rgba(6,182,212,.18);color:var(--accent-cyan);border:1px solid rgba(6,182,212,.3);}
+  /* Sections */
+  .sec{border-radius:6px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);min-height:44px;padding:6px;transition:all .15s;}
+  .sec.free{background:var(--sec-free-bg);border-color:var(--sec-free-bd);}
+  .sec.case{background:var(--sec-case-bg);border-color:var(--sec-case-bd);}
+  .sec.jail{background:var(--sec-jail-bg);border-color:var(--sec-jail-bd);}
+  .sec.drag-over{outline:2px dashed var(--accent-blue);outline-offset:2px;}
+  .sec-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.8;}
+  .sec.free .sec-lbl{color:var(--green);}
+  .sec.case .sec-lbl{color:var(--orange);}
+  .sec.jail .sec-lbl{color:var(--purple);}
+  .sec-units{display:flex;flex-wrap:wrap;gap:3px;}
+  .uchip{display:flex;align-items:center;gap:4px;background:var(--bg-card);border-radius:4px;padding:2px 7px;border:1px solid var(--border);cursor:pointer;transition:all .15s;font-size:11px;}
+  .uchip:hover{border-color:var(--accent-blue);background:var(--bg-hover);}
+  .uchip.partner{border-style:dashed;border-color:var(--accent-gold);}
+  .uchip.highlight{outline:2px solid var(--accent-cyan);outline-offset:1px;}
+  .ccode{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;}
+  .ccode.officer{color:var(--accent-gold);}
+  .ccode.nco{color:var(--accent-cyan);}
+  .ccode.command{color:var(--red);}
+  .ehint{font-size:10px;color:var(--text-muted);font-style:italic;padding:2px;}
+  /* MODAL */
+  .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .modal{background:var(--bg-panel);border:1px solid var(--border);border-radius:11px;padding:18px;min-width:320px;max-width:520px;width:100%;max-height:86vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.55);animation:mIn .18s ease;}
+  @keyframes mIn{from{opacity:0;transform:scale(.94) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+  .m-title{font-size:15px;font-weight:700;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .m-close{background:none;border:none;color:var(--text-muted);font-size:17px;cursor:pointer;transition:color .15s;}
+  .m-close:hover{color:var(--red);}
+  .m-sec{margin-bottom:13px;}
+  .m-lbl{font-size:11px;color:var(--text-muted);font-weight:700;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+  .m-acts{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
+  .u-sel-grid{display:flex;flex-wrap:wrap;gap:5px;max-height:170px;overflow-y:auto;background:var(--bg-deep);border-radius:5px;padding:7px;border:1px solid var(--border);}
+  .u-sel-chip{background:var(--bg-card);border:1px solid var(--border);border-radius:4px;padding:3px 9px;font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px;}
+  .u-sel-chip:hover{border-color:var(--accent-blue);}
+  .u-sel-chip.selected{background:rgba(59,130,246,.2);border-color:var(--accent-blue);color:var(--accent-cyan);}
+  .u-sel-chip.sel-finish{background:rgba(34,197,94,.2);border-color:var(--green);color:var(--green);}
+  /* CTX */
+  .ctx-menu{position:fixed;background:var(--bg-panel);border:1px solid var(--border);border-radius:7px;padding:4px;z-index:200;min-width:155px;box-shadow:0 14px 38px rgba(0,0,0,.55);animation:mIn .14s ease;}
+  .ctx-item{padding:6px 11px;border-radius:4px;font-size:12px;cursor:pointer;transition:background .1s;display:flex;align-items:center;gap:7px;}
+  .ctx-item:hover{background:var(--bg-hover);}
+  .ctx-item.danger{color:var(--red);}
+  .ctx-item.danger:hover{background:rgba(239,68,68,.1);}
+  .ctx-div{height:1px;background:var(--border);margin:3px 0;}
+  /* WAVE */
+  .wbadge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;border:2px solid var(--orange);color:var(--orange);background:rgba(249,115,22,.1);cursor:pointer;transition:all .2s;}
+  .wbadge:hover,.wbadge.sel{background:var(--orange);color:#fff;}
+  .wbadge.dis{opacity:.2;cursor:not-allowed;}
+  .ops-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .type-grid{display:flex;gap:6px;flex-wrap:wrap;}
+  .type-opt{flex:1;min-width:68px;padding:7px;text-align:center;background:var(--bg-card);border:1px solid var(--border);border-radius:5px;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s;}
+  .type-opt:hover{border-color:var(--accent-blue);background:var(--bg-hover);}
+  .type-opt.sel{border-color:var(--accent-blue);background:rgba(59,130,246,.15);color:var(--accent-cyan);}
+  .phint{font-size:11px;color:var(--accent-gold);background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:4px;padding:4px 8px;}
+  #copy-btn{background:linear-gradient(135deg,#1d4ed8,#0e7490);color:#fff;border:none;border-radius:6px;padding:7px 16px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;}
+  #copy-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(29,78,216,.4);}
+  #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(16px);padding:9px 18px;border-radius:7px;font-weight:700;font-size:12px;z-index:999;opacity:0;transition:all .28s;border:1px solid transparent;}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .drag-ghost{position:fixed;pointer-events:none;z-index:9999;background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:5px;padding:4px 9px;font-size:11px;font-family:'Orbitron',sans-serif;font-weight:700;color:var(--accent-cyan);box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;transition:opacity .1s;}
+  .drag-ghost.vis{opacity:.9;}
+  /* HIGHLIGHT PULSE */
+  @keyframes hlPulse{0%,100%{box-shadow:0 0 0 0 rgba(6,182,212,.5);}50%{box-shadow:0 0 0 4px rgba(6,182,212,0);}}
+  .uchip.highlight{animation:hlPulse 1s ease 3;}
+  .unit-card.highlight{animation:hlPulse 1s ease 3;border-color:var(--accent-cyan)!important;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- HEADER -->
+<div id="header">
+  <div class="hdr-logo">RT</div>
+  <div class="hdr-div"></div>
+  <div class="hdr-title">مركز عمليات شرطة ريسبكت</div>
+  <div class="hdr-right">
+    <div class="ops-pill" onclick="openOpsModal()">العمليات: <b id="hd-ops">—</b></div>
+    <div class="ops-pill" onclick="openOpsModal()">النائب: <b id="hd-dep">—</b></div>
+    <div class="ops-pill" onclick="openOpsModal()">⏱ <b id="hd-from">—</b> ← <b id="hd-to">—</b></div>
+    <!-- Global search -->
+    <div class="hdr-search" id="hdr-search-wrap">
+      <input class="inp" id="global-search" placeholder="🔍 بحث بالكود..." autocomplete="off" oninput="doGlobalSearch()" onblur="setTimeout(hideGlobalResults,200)" onfocus="doGlobalSearch()">
+      <div class="search-results-popup" id="global-results" style="display:none"></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="openOpsModal()">الإعدادات</button>
+    <button onclick="copyMessage()" id="copy-btn"> نسخ الرسالة</button>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sb-hdr">المتواجدون <span class="cnt-badge-red" id="sb-count">0</span></div>
+  <div id="add-form">
+    <div class="frow">
+      <input class="inp" id="new-code" type="number" placeholder="كود (100+)" min="100" style="width:95px" onkeydown="if(event.key==='Enter')addUnit()">
+      <select class="inp" id="new-type">
+        <option value="car">مركبة</option>
+        <option value="speed">سبيد يونت</option>
+        <option value="bike">دباب</option>
+        <option value="raptor">رابتر</option>
+      </select>
+      <button class="btn" onclick="addUnit()" style="padding:5px 9px">+</button>
+    </div>
+  </div>
+
+  <div id="units-list"></div>
+  <div id="sb-ctrl">
+    <button class="btn btn-orange" onclick="openNewCaseModal()" style="width:100%;font-size:12px">إنشاء حالة جديدة</button>
+    <div style="display:flex;gap:5px">
+      <button class="btn btn-danger btn-sm" onclick="clearSidebarUnits()" style="flex:1;font-size:10px">🗑 حذف القائمة</button>
+      <button class="btn btn-danger btn-sm" onclick="resetAllUnits()" style="flex:1;font-size:10px">↩ إرجاع الكل</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- Stats -->
+  <div class="stats-strip">
+    <div class="stat-ttl"> الميدان</div>
+    <div class="sdiv"></div>
+    <div class="stat-item">
+      <div class="stat-info">
+        <div class="stat-lbl">سبيد يونت</div>
+        <div class="stat-val sv-speed" id="st-speed">0</div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-info">
+        <div class="stat-lbl">دباب</div>
+        <div class="stat-val sv-bike" id="st-bike">0</div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-info">
+        <div class="stat-lbl">رابتر</div>
+        <div class="stat-val sv-raptor" id="st-raptor">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Command / Officers Panel -->
+  <div id="command-panel">
+    <div class="command-hdr">
+      <span>⭐</span>
+      <span class="command-hdr-title">الضباط والقيادة</span>
+      <span class="cmd-cnt" id="cmd-cnt">0</span>
+      <span style="font-size:10px;color:var(--text-muted);margin-right:auto">كود ≤ 199</span>
+    </div>
+    <div class="command-body" style="padding:10px 12px;">
+      <div class="cmd-units cmd-command" id="cmd-command"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="dropToCommand(event)">
+        <span class="cmd-empty" id="cmd-command-empty">اسحب وحدة هنا (كود ≤ 199)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cases -->
+  <div id="cases-panel">
+    <div class="panel-hdr"> الحالات الجارية <span id="cases-count" style="font-size:11px;color:var(--text-muted)">لا توجد</span></div>
+    <div class="cases-list" id="cases-list">
+      <div style="padding:9px 12px;font-size:11px;color:var(--text-muted)">لا توجد حالات نشطة</div>
+    </div>
+  </div>
+
+  <!-- Zones -->
+  <div id="zones-outer">
+    <div class="heli-col">
+      <div class="heli-title"><span class="zdot" style="background:#a855f7"></span>حرة هيلي</div>
+      <div class="heli-drop" id="zone-heli"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="dropToHeli(event)">
+        <div class="sec-units" id="heli-units"></div>
+        <div class="ehint" id="heli-empty">اسحب وحدة هنا</div>
+      </div>
+    </div>
+    <div id="zones-grid"></div>
+  </div>
+
+</div>
+</div>
+
+<div class="drag-ghost" id="drag-ghost"></div>
+<div id="toast"></div>
+<div id="modals"></div>
+<div style="position:fixed;bottom:5px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--text-muted);opacity:0.4;pointer-events:none;z-index:1;white-space:nowrap;letter-spacing:.3px;">تم إنشاء الموقع عن طريق فواز الإمام · fwaz_father</div>
+
+<script>
+const ZONES=['الوسط','الجنوب','الشمال','الغرب','الشرق'];
+const CASE_TYPES={'سرقة بقالة':5,'سرقة صراف':3,'سرقة كاشير':5,'سرقة بنك':8,'سرقة مجوهرات':7,'أخرى':null};
+const VALID_WAVES=[2,4,5,6,7,8,10];
+const LS_KEY='police_ops_v4';
+
+let state=loadState()||{units:[],ops:{name:'',code:'',depName:'',depCode:'',from:'',to:''},cases:[]};
+
+function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}catch(e){}}
+function loadState(){try{const s=localStorage.getItem(LS_KEY);return s?JSON.parse(s):null;}catch(e){return null;}}
+function uid(){return Math.random().toString(36).slice(2,9);}
+
+// Rank classification
+function isCommand(c){return parseInt(c)<=103;}
+function isOfficerRank(c){return parseInt(c)>=104&&parseInt(c)<=199;}
+function isNCORank(c){return parseInt(c)>=200&&parseInt(c)<=399;}
+// Legacy helpers for copy
+function isOfficer(c){return parseInt(c)>=100&&parseInt(c)<=299;}
+function isNCO(c){return parseInt(c)>=300;}
+
+function getRankClass(c){
+  const n=parseInt(c);
+  if(n<=103)return'command';
+  if(n<=199)return'officer';
+  return'nco';
+}
+function codeClass(c){return getRankClass(c);}
+
+function getTypeLabel(t){return{car:'مركبة',speed:'سبيد يونت',bike:'دباب',raptor:'رابتر'}[t]||'مركبة';}
+function getTypeBadge(t){
+  if(t==='speed')return'<span class="tbadge b-speed">سبيد</span>';
+  if(t==='bike')return'<span class="tbadge b-bike">دباب</span>';
+  if(t==='raptor')return'<span class="tbadge b-raptor">رابتر</span>';
+  return'';
+}
+function showToast(msg,ok=true){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=ok?'var(--green-dark)':'var(--red-dark)';
+  t.style.borderColor=ok?'var(--green)':'var(--red)';
+  t.style.color=ok?'var(--green)':'var(--red)';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// is unit "placed" (not sidebar and either in command or has a zone)
+function isPlaced(u){
+  return u.location==='command'||u.location==='heli'||(u.location!=='sidebar'&&u.zone);
+}
+
+function addUnit(){
+  const ce=document.getElementById('new-code'),te=document.getElementById('new-type');
+  const code=parseInt(ce.value);
+  if(!code||code<100){showToast('أدخل كوداً صحيحاً (100+)',false);return;}
+  if(state.units.find(u=>u.code===code)){showToast('الكود موجود مسبقاً',false);return;}
+  state.units.push({id:uid(),code,type:te.value,location:'sidebar',zone:null,section:'free',partnerId:null,caseId:null,prevZone:null,commandSlot:null});
+  ce.value='';saveState();render();
+}
+function deleteFromSidebar(id){state.units=state.units.filter(u=>u.id!==id);saveState();render();}
+function clearSidebarUnits(){
+  if(!confirm('حذف جميع وحدات القائمة نهائياً؟'))return;
+  state.units=state.units.filter(u=>u.location!=='sidebar');
+  saveState();render();showToast('تم حذف قائمة المتواجدين');
+}
+function resetAllUnits(){
+  if(!confirm('إرجاع جميع الوحدات إلى القائمة؟'))return;
+  state.units.forEach(u=>{u.location='sidebar';u.zone=null;u.section='free';u.partnerId=null;u.caseId=null;u.prevZone=null;u.commandSlot=null;});
+  state.cases=[];saveState();render();showToast('تم إرجاع جميع الوحدات ✓');
+}
+
+function render(){renderSidebar();renderZones();renderCases();renderStats();renderCommand();}
+
+function renderSidebar(){
+  let su=state.units.filter(u=>u.location==='sidebar');
+
+  // count total sidebar units (unfiltered) and show red badge
+  const totalSidebar=state.units.filter(u=>u.location==='sidebar').length;
+  const badge=document.getElementById('sb-count');
+  badge.textContent=totalSidebar;
+
+  document.getElementById('units-list').innerHTML=su.length===0
+    ?'<div class="ehint" style="padding:10px;text-align:center">لا توجد وحدات</div>'
+    :su.map(u=>`
+      <div class="unit-card unassigned" draggable="true" ondragstart="startDrag(event,'${u.id}','sidebar')" ondragend="endDrag()" id="uc-${u.id}">
+        <span class="ucode-dot"></span>
+        <span class="ucode ${codeClass(u.code)}">${u.code}</span>
+        ${getTypeBadge(u.type)}
+        <button class="udel" onclick="event.stopPropagation();deleteFromSidebar('${u.id}')">✕</button>
+      </div>`).join('');
+  document.getElementById('hd-ops').textContent=state.ops.name?`${state.ops.name} ${state.ops.code}`:'—';
+  document.getElementById('hd-dep').textContent=state.ops.depName?`${state.ops.depName} ${state.ops.depCode}`:'—';
+  document.getElementById('hd-from').textContent=state.ops.from||'—';
+  document.getElementById('hd-to').textContent=state.ops.to||'—';
+}
+
+function renderStats(){
+  // All deployed (not sidebar, not command)
+  const dep=state.units.filter(u=>u.location!=='sidebar');
+  document.getElementById('st-speed').textContent=dep.filter(u=>u.type==='speed').length;
+  document.getElementById('st-bike').textContent=dep.filter(u=>u.type==='bike').length;
+  document.getElementById('st-raptor').textContent=dep.filter(u=>u.type==='raptor').length;
+}
+
+function renderCommand(){
+  const units=state.units.filter(u=>u.location==='command');
+  const container=document.getElementById('cmd-command');
+  const emptyEl=document.getElementById('cmd-command-empty');
+  if(!container)return;
+  Array.from(container.querySelectorAll('.cmd-chip')).forEach(el=>el.remove());
+  if(units.length===0){if(emptyEl)emptyEl.style.display='';}
+  else{
+    if(emptyEl)emptyEl.style.display='none';
+    units.forEach(u=>{
+      const chip=document.createElement('div');
+      chip.className='cmd-chip';
+      chip.innerHTML=`<span class="ccode ${codeClass(u.code)}">${u.code}</span>${getTypeBadge(u.type)}`;
+      chip.onclick=(e)=>{e.stopPropagation();openCommandChipMenu(e,u.id);};
+      container.appendChild(chip);
+    });
+  }
+  document.getElementById('cmd-cnt').textContent=units.length;
+}
+
+function renderZones(){
+  document.getElementById('zones-grid').innerHTML=ZONES.map(zone=>{
+    const fu=state.units.filter(u=>u.zone===zone&&u.section==='free');
+    const cu=state.units.filter(u=>u.zone===zone&&u.section==='case');
+    const ju=state.units.filter(u=>u.zone===zone&&u.section==='jail');
+    const zoneAll=state.units.filter(u=>u.zone===zone);
+    const sp=zoneAll.filter(u=>u.type==='speed').length;
+    const bk=zoneAll.filter(u=>u.type==='bike').length;
+    const rp=zoneAll.filter(u=>u.type==='raptor').length;
+    const vtags=[
+      sp?`<span class="zone-vtag zone-vtag-speed">${sp} سبيد</span>`:'',
+      bk?`<span class="zone-vtag zone-vtag-bike">${bk} دباب</span>`:'',
+      rp?`<span class="zone-vtag zone-vtag-raptor">${rp} رابتر</span>`:'',
+    ].filter(Boolean).join('');
+    return`
+    <div class="zone-wrapper">
+      <div class="zone-name-row">${zone}
+        ${vtags?`<div class="zone-vehicle-tags">${vtags}</div>`:''}
+      </div>
+      <div class="sec free"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="dropToZone(event,'${zone}','free')">
+        <div class="sec-lbl">● شاغر</div>
+        <div class="sec-units">${renderChips(fu)}</div>
+        ${fu.length===0?'<div class="ehint">اسحب هنا</div>':''}
+      </div>
+      <div class="sec case"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="dropToZone(event,'${zone}','case')">
+        <div class="sec-lbl">● في حالة</div>
+        <div class="sec-units">${renderChips(cu)}</div>
+        ${cu.length===0?'<div class="ehint">—</div>':''}
+      </div>
+      ${ju.length>0?`
+      <div class="sec jail"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="dropToZone(event,'${zone}','jail')">
+        <div class="sec-lbl">● زنزانات</div>
+        <div class="sec-units">${renderChips(ju)}</div>
+      </div>`:''}
+    </div>`;
+  }).join('');
+  const hu=state.units.filter(u=>u.location==='heli');
+  document.getElementById('heli-units').innerHTML=renderChips(hu);
+  document.getElementById('heli-empty').style.display=hu.length?'none':'';
+}
+
+function renderChips(units){
+  const done=new Set();let html='';
+  for(const u of units){
+    if(done.has(u.id))continue;done.add(u.id);
+    if(u.partnerId){
+      const p=state.units.find(x=>x.id===u.partnerId);
+      if(p&&!done.has(p.id)){
+        done.add(p.id);
+        html+=`<div class="uchip partner" draggable="true"
+          ondragstart="startDrag(event,'${u.id}','zone',true)" ondragend="endDrag()"
+          onclick="event.stopPropagation();openChipMenu(event,'${u.id}')">
+          <span class="ccode ${codeClass(u.code)}">${u.code}</span>${u.type!=='car'?getTypeBadge(u.type):''}
+          <span style="color:var(--accent-gold);font-size:9px;font-weight:900">+</span>
+          <span class="ccode ${codeClass(p.code)}">${p.code}</span>${p.type!=='car'?getTypeBadge(p.type):''}
+        </div>`;continue;
+      }
+    }
+    html+=`<div class="uchip" draggable="true"
+      ondragstart="startDrag(event,'${u.id}','zone')" ondragend="endDrag()"
+      onclick="event.stopPropagation();openChipMenu(event,'${u.id}')">
+      <span class="ccode ${codeClass(u.code)}">${u.code}</span>${u.type!=='car'?getTypeBadge(u.type):''}
+    </div>`;
+  }
+  return html;
+}
+
+// DRAG
+let DS={id:null,isPartner:false,from:null};
+const ghost=document.getElementById('drag-ghost');
+document.addEventListener('dragover',e=>{ghost.style.left=(e.clientX+12)+'px';ghost.style.top=(e.clientY+12)+'px';});
+
+function startDrag(e,id,from,isPartner=false){
+  DS={id,isPartner,from};
+  const u=state.units.find(x=>x.id===id);
+  ghost.textContent=isPartner?`${u.code}+${state.units.find(x=>x.id===u.partnerId)?.code||'?'}`:String(u.code);
+  ghost.classList.add('vis');
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setDragImage(new Image(),0,0);
+}
+function endDrag(){
+  ghost.classList.remove('vis');DS={id:null,isPartner:false,from:null};
+  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+}
+function dropToZone(e,zone,section){
+  e.preventDefault();
+  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  if(!DS.id)return;
+  const u=state.units.find(x=>x.id===DS.id);if(!u)return;
+  const ids=DS.isPartner&&u.partnerId?[u.id,u.partnerId]:[u.id];
+  ids.forEach(id=>{const unit=state.units.find(x=>x.id===id);unit.location=zone;unit.zone=zone;unit.section=section;unit.commandSlot=null;});
+  saveState();render();
+}
+function dropToHeli(e){
+  e.preventDefault();document.getElementById('zone-heli').classList.remove('drag-over');
+  if(!DS.id)return;
+  const u=state.units.find(x=>x.id===DS.id);if(!u)return;
+  u.location='heli';u.zone='هيلي';u.section='free';u.commandSlot=null;
+  if(u.partnerId){const p=state.units.find(x=>x.id===u.partnerId);if(p){p.location='heli';p.zone='هيلي';p.section='free';p.commandSlot=null;}}
+  saveState();render();
+}
+function dropToCommand(e){
+  e.preventDefault();
+  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  if(!DS.id)return;
+  const u=state.units.find(x=>x.id===DS.id);if(!u)return;
+  if(parseInt(u.code)>199){showToast('هذا القسم للكود ≤ 199 فقط',false);return;}
+  u.location='command';u.zone=null;u.section='free';u.commandSlot='command';u.caseId=null;
+  if(u.partnerId){const p=state.units.find(x=>x.id===u.partnerId);if(p){
+    if(parseInt(p.code)>199){showToast('الوحدة المشتركة كودها > 199',false);}
+    else{p.location='command';p.zone=null;p.section='free';p.commandSlot='command';p.caseId=null;}
+  }}
+  saveState();render();
+}
+
+// CTX MENU
+let ctxEl=null;
+function openChipMenu(e,id){
+  e.stopPropagation();closeCtxMenu();
+  const u=state.units.find(x=>x.id===id);if(!u)return;
+  const menu=document.createElement('div');menu.className='ctx-menu';
+  const x=Math.min(e.clientX,window.innerWidth-165);
+  const y=Math.min(e.clientY,window.innerHeight-250);
+  menu.style.left=x+'px';menu.style.top=y+'px';
+  let caseOpts=state.cases.map(c=>`<div class="ctx-item" onclick="sendUnitToCase('${id}','${c.id}');closeCtxMenu()">📌 إرسال: ${c.customType||c.type} م${c.wave}</div>`).join('');
+  if(caseOpts)caseOpts+='<div class="ctx-div"></div>';
+  const pullBtn=(u.section==='case'&&u.caseId)?`<div class="ctx-item" onclick="pullFromCase('${id}');closeCtxMenu()">⬅ سحب من الحالة</div>`:'';
+  const pBtn=u.partnerId?`<div class="ctx-item" onclick="removePartner('${id}');closeCtxMenu()">🔗 إلغاء مشترك</div>`:`<div class="ctx-item" onclick="openPartnerModal('${id}');closeCtxMenu()">🔗 إضافة مشترك</div>`;
+  menu.innerHTML=`${caseOpts}${pullBtn}<div class="ctx-item" onclick="openVehicleChange('${id}');closeCtxMenu()">🚗 تغيير المركبة</div>${pBtn}<div class="ctx-div"></div><div class="ctx-item danger" onclick="returnToSidebar('${id}');closeCtxMenu()">↩ إرجاع للقائمة</div>`;
+  document.body.appendChild(menu);ctxEl=menu;
+}
+function openCommandChipMenu(e,id){
+  e.stopPropagation();closeCtxMenu();
+  const u=state.units.find(x=>x.id===id);if(!u)return;
+  const menu=document.createElement('div');menu.className='ctx-menu';
+  const x=Math.min(e.clientX,window.innerWidth-165);
+  const y=Math.min(e.clientY,window.innerHeight-180);
+  menu.style.left=x+'px';menu.style.top=y+'px';
+  let caseOpts=state.cases.map(c=>`<div class="ctx-item" onclick="sendUnitToCase('${id}','${c.id}');closeCtxMenu()">📌 إرسال: ${c.customType||c.type} م${c.wave}</div>`).join('');
+  if(caseOpts)caseOpts+='<div class="ctx-div"></div>';
+  menu.innerHTML=`${caseOpts}<div class="ctx-item" onclick="openVehicleChange('${id}');closeCtxMenu()">🚗 تغيير المركبة</div><div class="ctx-div"></div><div class="ctx-item danger" onclick="returnToSidebar('${id}');closeCtxMenu()">↩ إرجاع للقائمة</div>`;
+  document.body.appendChild(menu);ctxEl=menu;
+}
+document.addEventListener('click',closeCtxMenu);
+function closeCtxMenu(){if(ctxEl){ctxEl.remove();ctxEl=null;}}
+function returnToSidebar(id){
+  const u=state.units.find(x=>x.id===id);if(!u)return;
+  const ids=u.partnerId?[id,u.partnerId]:[id];
+  ids.forEach(uid=>{const unit=state.units.find(x=>x.id===uid);unit.location='sidebar';unit.zone=null;unit.section='free';unit.partnerId=null;unit.caseId=null;unit.commandSlot=null;});
+  saveState();render();
+}
+function removePartner(id){
+  const u=state.units.find(x=>x.id===id);if(!u||!u.partnerId)return;
+  const p=state.units.find(x=>x.id===u.partnerId);
+  if(p){p.partnerId=null;p.location='sidebar';p.zone=null;p.section='free';}
+  u.partnerId=null;saveState();render();
+}
+function openVehicleChange(id){
+  const u=state.units.find(x=>x.id===id);if(!u)return;
+  const modal=createModal('🚗 تغيير المركبة');
+  modal.innerHTML+=`<div class="type-grid">${['car','speed','bike','raptor'].map(t=>`
+    <div class="type-opt ${u.type===t?'sel':''}" onclick="changeVehicle('${id}','${t}');closeModal()">${getTypeLabel(t)}</div>`).join('')}</div>`;
+}
+function changeVehicle(id,type){const u=state.units.find(x=>x.id===id);if(u)u.type=type;saveState();render();}
+function openPartnerModal(id){
+  const u=state.units.find(x=>x.id===id);if(!u)return;
+  const av=state.units.filter(x=>x.id!==id&&x.location===u.location&&x.zone===u.zone&&x.section===u.section&&!x.partnerId);
+  if(!av.length){showToast('لا توجد وحدات في نفس الموقع',false);return;}
+  const modal=createModal('🔗 إضافة وحدة مشتركة');
+  modal.innerHTML+=`<div class="m-lbl">اختر مع ${u.code}</div><div class="u-sel-grid">${av.map(x=>`<div class="u-sel-chip" onclick="setPartner('${id}','${x.id}');closeModal()"><span class="ccode ${codeClass(x.code)}">${x.code}</span>${getTypeBadge(x.type)}</div>`).join('')}</div>`;
+}
+function setPartner(a,b){
+  const u1=state.units.find(x=>x.id===a),u2=state.units.find(x=>x.id===b);
+  if(!u1||!u2)return;u1.partnerId=b;u2.partnerId=a;saveState();render();
+}
+
+// OPS
+function openOpsModal(){
+  const modal=createModal('⚙ إعداد الوردية');
+  modal.innerHTML+=`
+    <div class="ops-grid">
+      <div><div class="m-lbl">اسم العمليات</div><input class="inp" id="om-n" value="${state.ops.name}" placeholder="الاسم"></div>
+      <div><div class="m-lbl">كود العمليات</div><input class="inp" id="om-c" type="number" value="${state.ops.code}" placeholder="الكود"></div>
+      <div><div class="m-lbl">اسم النائب</div><input class="inp" id="om-dn" value="${state.ops.depName}" placeholder="الاسم"></div>
+      <div><div class="m-lbl">كود النائب</div><input class="inp" id="om-dc" type="number" value="${state.ops.depCode}" placeholder="الكود"></div>
+      <div><div class="m-lbl">وقت الاستلام</div><input class="inp" id="om-f" value="${state.ops.from}" placeholder="5:15"></div>
+      <div><div class="m-lbl">وقت التسليم</div><input class="inp" id="om-t" value="${state.ops.to}" placeholder="7:53"></div>
+    </div>
+    <div class="m-acts"><button class="btn btn-success" onclick="saveOps()"> حفظ</button><button class="btn btn-ghost" onclick="closeModal()">إلغاء</button></div>`;
+}
+function saveOps(){
+  state.ops.name=document.getElementById('om-n').value.trim();
+  state.ops.code=document.getElementById('om-c').value.trim();
+  state.ops.depName=document.getElementById('om-dn').value.trim();
+  state.ops.depCode=document.getElementById('om-dc').value.trim();
+  state.ops.from=document.getElementById('om-f').value.trim();
+  state.ops.to=document.getElementById('om-t').value.trim();
+  saveState();closeModal();renderSidebar();showToast('تم حفظ الوردية ✓');
+}
+
+// CASES
+function getNextWave(){const used=new Set(state.cases.map(c=>c.wave));for(const w of VALID_WAVES)if(!used.has(w))return w;return VALID_WAVES[VALID_WAVES.length-1];}
+
+function openNewCaseModal(){
+  const nw=getNextWave();
+  const av=state.units.filter(u=>u.location!=='sidebar'&&u.location!=='command'&&u.section==='free'&&!u.caseId);
+  const modal=createModal(' إنشاء حالة جديدة');
+  modal.innerHTML+=`
+    <div class="m-sec">
+      <div class="m-lbl">نوع الحالة</div>
+      <select class="inp" id="nc-type" onchange="toggleCustom();updateHint()">
+        ${Object.keys(CASE_TYPES).map(t=>`<option value="${t}">${t}${CASE_TYPES[t]?' ('+CASE_TYPES[t]+' عساكر)':''}</option>`).join('')}
+      </select>
+      <div id="nc-cw" style="display:none;margin-top:6px"><input class="inp" id="nc-custom" placeholder="اكتب نوع الحالة"></div>
+    </div>
+    <div class="m-sec">
+      <div class="m-lbl">موجة الحالة</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${[1,2,4,5,6,7,8,10].map(w=>`<div class="wbadge ${w===1?'dis':''} ${w===nw?'sel':''}" id="wb-${w}" onclick="${w!==1?`selWave(${w})`:''}"> ${w}</div>`).join('')}
+      </div>
+      <input type="hidden" id="nc-wave" value="${nw}">
+    </div>
+    <div class="m-sec">
+      <div class="m-lbl">الوحدات المشاركة</div>
+      <div id="nc-hint" class="phint" style="margin-bottom:7px">اختر الوحدات</div>
+      <div class="u-sel-grid" id="nc-grid">
+        ${!av.length?'<div class="ehint">لا توجد وحدات شاغرة موزعة</div>':av.map(u=>`
+          <div class="u-sel-chip" id="ncs-${u.id}" onclick="togCaseUnit('${u.id}')">
+            <span class="ccode ${codeClass(u.code)}">${u.code}</span>${getTypeBadge(u.type)}
+            <span style="font-size:9px;color:var(--text-muted)">${u.zone||'?'}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="m-acts"><button class="btn btn-orange" onclick="createCase()">إنشاء</button><button class="btn btn-ghost" onclick="closeModal()">إلغاء</button></div>`;
+  window._selCaseUnits=new Set();updateHint();
+}
+function toggleCustom(){document.getElementById('nc-cw').style.display=document.getElementById('nc-type')?.value==='أخرى'?'':'none';}
+function selWave(w){document.querySelectorAll('.wbadge').forEach(el=>el.classList.remove('sel'));document.getElementById('wb-'+w)?.classList.add('sel');document.getElementById('nc-wave').value=w;}
+function updateHint(){
+  const te=document.getElementById('nc-type');if(!te)return;
+  const limit=CASE_TYPES[te.value];const sel=(window._selCaseUnits||new Set()).size;
+  const h=document.getElementById('nc-hint');if(!h)return;
+  h.textContent=limit===null?`مختار: ${sel} وحدة (مفتوح)`:`مختار: ${sel} / ${limit} وحدة`;
+}
+function togCaseUnit(id){
+  if(!window._selCaseUnits)window._selCaseUnits=new Set();
+  const limit=CASE_TYPES[document.getElementById('nc-type')?.value];
+  if(window._selCaseUnits.has(id)){window._selCaseUnits.delete(id);document.getElementById('ncs-'+id)?.classList.remove('selected');}
+  else{if(limit!==null&&window._selCaseUnits.size>=limit){showToast(`الحد المسموح ${limit}`,false);return;}window._selCaseUnits.add(id);document.getElementById('ncs-'+id)?.classList.add('selected');}
+  updateHint();
+}
+function createCase(){
+  const type=document.getElementById('nc-type').value;
+  const wave=parseInt(document.getElementById('nc-wave').value);
+  const custom=document.getElementById('nc-custom')?.value.trim()||'';
+  const unitIds=[...(window._selCaseUnits||new Set())];
+  if(!wave||wave===1){showToast('اختر موجة صحيحة',false);return;}
+  if(state.cases.find(c=>c.wave===wave)){showToast('الموجة محجوزة',false);return;}
+  const co={id:uid(),type,customType:type==='أخرى'?custom:'',wave,unitIds:[...unitIds]};
+  unitIds.forEach(id=>{const u=state.units.find(x=>x.id===id);if(u){u.prevZone=u.zone;u.section='case';u.caseId=co.id;}});
+  state.cases.push(co);window._selCaseUnits=new Set();
+  closeModal();saveState();render();showToast(`تم إنشاء حالة ${co.customType||co.type} م${wave} ✓`);
+}
+function renderCases(){
+  const list=document.getElementById('cases-list'),cnt=document.getElementById('cases-count');
+  if(!state.cases.length){list.innerHTML='<div style="padding:9px 12px;font-size:11px;color:var(--text-muted)">لا توجد حالات نشطة</div>';cnt.textContent='لا توجد';return;}
+  cnt.textContent=`${state.cases.length} حالة`;
+  list.innerHTML=state.cases.map(c=>`
+    <div class="case-item" onclick="openCaseDetail('${c.id}')">
+      <div class="case-wave">${c.wave}</div>
+      <div class="case-name">${c.customType||c.type}</div>
+      <div class="case-cnt">${c.unitIds.length} وحدة</div>
+      <span style="font-size:11px;color:var(--text-muted)">←</span>
+    </div>`).join('');
+}
+function openCaseDetail(cid){
+  const c=state.cases.find(x=>x.id===cid);if(!c)return;
+  const units=state.units.filter(u=>c.unitIds.includes(u.id));
+  const modal=createModal(`${c.customType||c.type} — موجة ${c.wave}`);
+  modal.innerHTML+=`
+    <div class="m-sec">
+      <div class="m-lbl">الوحدات (${units.length}) — اضغط لسحب من الحالة</div>
+      <div class="u-sel-grid">${units.map(u=>`
+        <div class="u-sel-chip" onclick="pullFromCase('${u.id}');closeModal()">
+          <span class="ccode ${codeClass(u.code)}">${u.code}</span>${getTypeBadge(u.type)}
+          <span style="font-size:9px;color:var(--text-muted)">${u.zone||'?'}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="m-acts">
+      <button class="btn btn-danger" onclick="closeModal();openFinishCase('${cid}')">إنهاء الحالة</button>
+      <button class="btn btn-ghost" onclick="closeModal()">إغلاق</button>
+    </div>`;
+}
+function pullFromCase(id){
+  const u=state.units.find(x=>x.id===id);if(!u||!u.caseId)return;
+  const c=state.cases.find(x=>x.id===u.caseId);if(c)c.unitIds=c.unitIds.filter(x=>x!==id);
+  u.section='free';u.caseId=null;saveState();render();showToast(`تم سحب ${u.code} من الحالة`);
+}
+function sendUnitToCase(uid,cid){
+  const u=state.units.find(x=>x.id===uid),c=state.cases.find(x=>x.id===cid);if(!u||!c)return;
+  u.prevZone=u.zone;u.section='case';u.caseId=cid;if(!c.unitIds.includes(uid))c.unitIds.push(uid);
+  saveState();render();showToast(`تم إرسال ${u.code} ✓`);
+}
+function openFinishCase(cid){
+  const c=state.cases.find(x=>x.id===cid);if(!c)return;
+  const units=state.units.filter(u=>c.unitIds.includes(u.id));
+  const modal=createModal('إنهاء الحالة');
+  modal.innerHTML+=`
+    <div class="m-sec">
+      <div class="m-lbl">من سيتعامل مع الأشخاص في الزنزانات؟</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:7px">المختارون → زنزانات | الباقون → يعودون لمواقعهم</div>
+      <div class="u-sel-grid">${units.map(u=>`
+        <div class="u-sel-chip" id="fin-${u.id}" onclick="togFin('${u.id}')">
+          <span class="ccode ${codeClass(u.code)}">${u.code}</span>${getTypeBadge(u.type)}
+          <span style="font-size:9px;color:var(--text-muted)">${u.zone||'?'}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="m-acts"><button class="btn btn-danger" onclick="finishCase('${cid}')">تأكيد</button><button class="btn btn-ghost" onclick="closeModal()">إلغاء</button></div>`;
+  window._finJail=new Set();
+}
+function togFin(id){
+  if(!window._finJail)window._finJail=new Set();
+  if(window._finJail.has(id)){window._finJail.delete(id);document.getElementById('fin-'+id)?.classList.remove('sel-finish');}
+  else{window._finJail.add(id);document.getElementById('fin-'+id)?.classList.add('sel-finish');}
+}
+function finishCase(cid){
+  const c=state.cases.find(x=>x.id===cid);if(!c)return;
+  const jids=window._finJail||new Set();
+  c.unitIds.forEach(id=>{
+    const u=state.units.find(x=>x.id===id);if(!u)return;
+    u.caseId=null;
+    if(jids.has(id)){u.section='jail';}
+    else{u.section='free';if(u.prevZone){u.location=u.prevZone;u.zone=u.prevZone;}}
+  });
+  state.cases=state.cases.filter(x=>x.id!==cid);window._finJail=new Set();
+  closeModal();saveState();render();showToast('تم إنهاء الحالة ✓');
+}
+
+// MODAL HELPERS
+let modalEl=null;
+function createModal(title){
+  closeModal();
+  const ov=document.createElement('div');ov.className='modal-ov';
+  ov.onclick=e=>{if(e.target===ov)closeModal();};
+  const modal=document.createElement('div');modal.className='modal';
+  const th=document.createElement('div');th.className='m-title';
+  th.innerHTML=`<span>${title}</span><button class="m-close" onclick="closeModal()">✕</button>`;
+  modal.appendChild(th);ov.appendChild(modal);
+  document.getElementById('modals').appendChild(ov);modalEl=ov;return modal;
+}
+function closeModal(){if(modalEl){modalEl.remove();modalEl=null;}}
+
+// GLOBAL SEARCH
+function getUnitLocation(u){
+  if(u.location==='sidebar')return'القائمة';
+  if(u.location==='command')return'الضباط والقيادة';
+  if(u.location==='heli')return'هيلي';
+  const sec={free:'شاغر',case:'في حالة',jail:'زنزانة'};
+  return`${u.zone||'?'} / ${sec[u.section]||u.section}`;
+}
+function doGlobalSearch(){
+  const q=(document.getElementById('global-search')?.value||'').trim();
+  const popup=document.getElementById('global-results');
+  if(!q){popup.style.display='none';return;}
+  const matches=state.units.filter(u=>String(u.code).includes(q));
+  if(!matches.length){popup.innerHTML='<div class="srp-empty">لا نتائج</div>';popup.style.display='block';return;}
+  popup.innerHTML=matches.map(u=>`
+    <div class="srp-item" onclick="highlightUnit('${u.id}');hideGlobalResults()">
+      <span class="ccode ${codeClass(u.code)}" style="font-size:12px">${u.code}</span>
+      ${getTypeBadge(u.type)}
+      <span class="srp-loc">${getUnitLocation(u)}</span>
+    </div>`).join('');
+  popup.style.display='block';
+}
+function hideGlobalResults(){
+  document.getElementById('global-results').style.display='none';
+  document.getElementById('global-search').value='';
+}
+function highlightUnit(id){
+  // pulse the chip/card wherever it is
+  render();
+  setTimeout(()=>{
+    const el=document.querySelector(`[id*="${id}"], [ondragstart*="${id}"]`);
+    if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('highlight');setTimeout(()=>el.classList.remove('highlight'),3000);}
+  },80);
+}
+
+// COPY MESSAGE
+function copyMessage(){
+  const dep=state.units.filter(u=>u.location!=='sidebar');
+  const offs=dep.filter(u=>isOfficer(u.code)).sort((a,b)=>a.code-b.code);
+  const ncos=dep.filter(u=>isNCO(u.code)).sort((a,b)=>a.code-b.code);
+  const offStr=offs.map(u=>u.code).join(' - ')||'—';
+  const ncoStr=ncos.map(u=>u.code).join(' - ')||'—';
+  const resp=ncos.length>0?ncos[0].code:'—';
+
+  const lines=[];
+  const hu=state.units.filter(u=>u.location==='heli');
+  lines.push(`| حره | هيلي | ${hu.map(u=>u.code).join(' + ')}`);
+  lines.push('');
+
+  const done=new Set();
+  ZONES.forEach((zone,idx)=>{
+    const zu=state.units.filter(u=>u.zone===zone);
+    const speeds=[],cars=[],bikes=[];
+    zu.forEach(u=>{
+      if(done.has(u.id))return;
+      const et=u.type==='raptor'?'car':u.type;
+      let cs=String(u.code);
+      if(u.partnerId&&!done.has(u.partnerId)){const p=state.units.find(x=>x.id===u.partnerId);if(p){cs=`${u.code} + ${p.code}`;done.add(u.partnerId);}}
+      done.add(u.id);
+      if(et==='speed')speeds.push(cs);else if(et==='bike')bikes.push(cs);else cars.push(cs);
+    });
+    lines.push(`| ${zone} | سبيد يونت | ${speeds.join(' + ')}`);
+    if(!cars.length){lines.push(`| ${zone} | مركبة | `);}
+    else if(cars.length<=2){lines.push(`| ${zone} | مركبة | ${cars.join(' + ')}`);}
+    else{for(let i=0;i<cars.length;i+=2){const ch=cars.slice(i,i+2);lines.push(`| ${zone} | مركبة | ${ch.join(' + ')}`);}}
+    lines.push(`| ${zone} | دباب | ${bikes.join(' + ')}`);
+    if(idx<ZONES.length-1){lines.push('');lines.push('');}
+  });
+
+  const msg=
+`اسم العمليات : ${state.ops.name||'—'} ${state.ops.code||''}
+نائب العمليات : ${state.ops.depName||'—'} ${state.ops.depCode||''}
+قيادات : 
+ضباط : ${offStr}
+
+ضباط صف :  ${ncoStr}
+
+مسؤول الفتره : ${resp}
+
+توزيع الوحدات :
+${lines.join('\n')}
+
+وقت الاستلام : ${state.ops.from||'—'}
+وقت التسليم : ${state.ops.to||'—'}
+تم التسليم الى : ${state.ops.depName||'—'} ${state.ops.depCode||''}`;
+
+  navigator.clipboard.writeText(msg).then(()=>showToast('تم نسخ الرسالة ')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('تم نسخ الرسالة ');
+  });
+}
+
+render();
+</script>
+</body>
+</html>
