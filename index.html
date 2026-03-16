@@ -7,58 +7,33 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap');
   :root {
-    --bg-deep:#060a10;
-    --bg-panel:#0c1220;
-    --bg-card:#111827;
-    --bg-hover:#1a2535;
-    --border:#1e3a5f;
-    --accent-blue:#3b82f6;
-    --accent-cyan:#06b6d4;
-    --accent-gold:#f59e0b;
-    --text-main:#e2e8f0;
-    --text-muted:#64748b;
-    --text-dim:#94a3b8;
-    --green:#22c55e;
-    --green-dark:#166534;
-    --red:#ef4444;
-    --red-dark:#7f1d1d;
-    --purple:#a855f7;
-    --scrollbar:#1e3a5f;
-    /* Brand — البنفسجي الأساسي */
-    --brand:rgb(117,48,197);
-    --brand-dim:rgba(117,48,197,.18);
-    --brand-glow:rgba(117,48,197,.35);
-    --brand-border:rgba(117,48,197,.4);
-    /* Sections */
-    --sec-free-bg:rgba(34,197,94,0.07);
-    --sec-free-bd:rgba(34,197,94,0.28);
-    --sec-case-bg:rgba(117,48,197,0.07);
-    --sec-case-bd:rgba(117,48,197,0.3);
-    --sec-jail-bg:rgba(168,85,247,0.07);
-    --sec-jail-bd:rgba(168,85,247,0.28);
-    /* Orange only for case-creation button */
-    --orange-btn:rgb(180,60,10);
-    --orange-btn-border:rgb(220,90,20);
+    --bg-deep:#060a10;--bg-panel:#0c1220;--bg-card:#111827;--bg-hover:#1a2535;
+    --border:#1e3a5f;--accent-blue:#3b82f6;--accent-cyan:#06b6d4;--accent-gold:#f59e0b;
+    --text-main:#e2e8f0;--text-muted:#64748b;--text-dim:#94a3b8;
+    --green:#22c55e;--green-dark:#166534;--red:#ef4444;--red-dark:#7f1d1d;--purple:#a855f7;
+    --scrollbar:#2d1f5e;
+    --brand:rgb(117,48,197);--brand-dim:rgba(117,48,197,.18);--brand-glow:rgba(117,48,197,.35);
+    --brand-border:rgba(117,48,197,.4);--brand-deep:rgba(117,48,197,.08);
+    --sec-free-bg:rgba(34,197,94,0.07);--sec-free-bd:rgba(34,197,94,0.28);
+    --sec-case-bg:rgba(117,48,197,0.07);--sec-case-bd:rgba(117,48,197,0.3);
+    --sec-jail-bg:rgba(168,85,247,0.07);--sec-jail-bd:rgba(168,85,247,0.28);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Cairo',sans-serif;background:var(--bg-deep);color:var(--text-main);height:100vh;overflow:hidden;user-select:none;}
   body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 10%,rgba(117,48,197,.05),transparent 50%),radial-gradient(ellipse at 85% 90%,rgba(117,48,197,.03),transparent 50%);pointer-events:none;z-index:0;}
   ::-webkit-scrollbar{width:4px;height:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--brand-border);border-radius:3px;}
-
   #app{display:grid;grid-template-columns:268px 1fr;grid-template-rows:52px 1fr;height:100vh;position:relative;z-index:1;}
 
-  /* ── HEADER ── */
+  /* HEADER */
   #header{grid-column:1/-1;background:linear-gradient(90deg,#060d1a,#0d0a18 50%,#060d1a);border-bottom:1px solid var(--brand-border);display:flex;align-items:center;padding:0 16px;gap:10px;position:relative;}
   #header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--brand),transparent);}
   .hdr-logo{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--brand);letter-spacing:3px;}
   .hdr-div{width:1px;height:22px;background:var(--brand-border);}
-  .hdr-title{font-size:14px;font-weight:700;color:var(--text-main);}
+  .hdr-title{font-size:14px;font-weight:700;}
   .hdr-right{margin-right:auto;display:flex;align-items:center;gap:8px;}
   .ops-pill{background:var(--bg-card);border:1px solid var(--brand-border);border-radius:5px;padding:3px 10px;font-size:11px;color:var(--text-dim);cursor:pointer;transition:all .2s;}
   .ops-pill:hover{border-color:var(--brand);color:var(--text-main);background:var(--brand-dim);}
   .ops-pill b{color:var(--accent-gold);font-weight:700;}
-
-  /* Header Search */
   .hdr-search{position:relative;display:flex;align-items:center;}
   .hdr-search input{background:var(--bg-card);border:1px solid var(--border);border-radius:5px;color:var(--text-main);font-family:'Cairo',sans-serif;font-size:11px;padding:4px 8px;outline:none;transition:all .2s;width:140px;}
   .hdr-search input:focus{border-color:var(--brand);width:170px;box-shadow:0 0 0 2px var(--brand-dim);}
@@ -70,58 +45,57 @@
   .srp-loc{font-size:10px;color:var(--text-muted);margin-right:auto;}
   .srp-empty{padding:10px 12px;font-size:11px;color:var(--text-muted);text-align:center;}
 
-  /* ── SIDEBAR ── */
+  /* SIDEBAR */
   #sidebar{background:var(--bg-panel);border-left:1px solid var(--brand-border);display:flex;flex-direction:column;overflow:hidden;}
   .sb-hdr{padding:9px 12px;border-bottom:1px solid var(--brand-border);font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;justify-content:space-between;}
   .cnt-badge-red{background:var(--red-dark);color:var(--red);border:1px solid var(--red);border-radius:10px;padding:1px 7px;font-size:10px;}
   #add-form{padding:8px 10px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:6px;}
   .frow{display:flex;gap:6px;}
+  /* Sidebar search */
+  .sb-search-box{padding:5px 10px;border-bottom:1px solid var(--border);}
+  .sb-search-box input{width:100%;background:var(--bg-card);border:1px solid var(--border);border-radius:5px;color:var(--text-main);font-family:'Cairo',sans-serif;font-size:11px;padding:4px 8px;outline:none;transition:all .2s;}
+  .sb-search-box input:focus{border-color:var(--brand);box-shadow:0 0 0 2px var(--brand-dim);}
+  .sb-search-box input::placeholder{color:var(--text-muted);}
   .inp{background:var(--bg-card);border:1px solid var(--border);border-radius:5px;color:var(--text-main);font-family:'Cairo',sans-serif;font-size:12px;padding:5px 8px;outline:none;transition:all .2s;width:100%;}
   .inp:focus{border-color:var(--brand);box-shadow:0 0 0 2px var(--brand-dim);}
   .inp::placeholder{color:var(--text-muted);}
   select.inp{cursor:pointer;}select.inp option{background:var(--bg-card);}
-
-  /* Buttons */
   .btn{background:var(--brand);color:#fff;border:none;border-radius:5px;padding:5px 11px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
   .btn:hover{filter:brightness(1.2);transform:translateY(-1px);box-shadow:0 4px 12px var(--brand-glow);}
   .btn:active{transform:translateY(0);}
   .btn-sm{padding:3px 8px;font-size:11px;}
   .btn-danger{background:var(--red-dark);border:1px solid var(--red);color:var(--red);}
-  .btn-danger:hover{background:rgba(239,68,68,.2);box-shadow:none;}
+  .btn-danger:hover{background:rgba(239,68,68,.2);box-shadow:none;filter:none;transform:none;}
   .btn-success{background:var(--green-dark);border:1px solid var(--green);color:var(--green);}
-  .btn-success:hover{background:rgba(34,197,94,.2);box-shadow:none;}
+  .btn-success:hover{background:rgba(34,197,94,.2);box-shadow:none;filter:none;transform:none;}
   .btn-ghost{background:transparent;border:1px solid var(--brand-border);color:var(--text-dim);}
-  .btn-ghost:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-dim);box-shadow:none;}
-  .btn-orange{background:rgba(180,60,10,.25);border:1px solid var(--orange-btn-border);color:rgb(230,110,40);}
-  .btn-orange:hover{background:rgba(180,60,10,.4);box-shadow:none;}
+  .btn-ghost:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-dim);box-shadow:none;filter:none;transform:none;}
+  .btn-orange{background:rgba(180,60,10,.25);border:1px solid rgb(220,90,20);color:rgb(230,110,40);}
+  .btn-orange:hover{background:rgba(180,60,10,.4);box-shadow:none;filter:none;transform:none;}
   .btn-brand{background:var(--brand-dim);border:1px solid var(--brand);color:var(--brand);}
-  .btn-brand:hover{background:var(--brand-glow);box-shadow:0 4px 12px var(--brand-dim);}
-
+  .btn-brand:hover{background:var(--brand-glow);box-shadow:0 4px 12px var(--brand-dim);filter:none;transform:none;}
+  .btn-cyan{background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.5);color:var(--accent-cyan);}
+  .btn-cyan:hover{background:rgba(6,182,212,.25);box-shadow:none;filter:none;transform:none;}
   #units-list{flex:1;overflow-y:auto;padding:7px;display:flex;flex-direction:column;gap:3px;}
   .unit-card{background:var(--bg-card);border:1px solid var(--border);border-radius:5px;padding:6px 9px;display:flex;align-items:center;gap:7px;cursor:grab;transition:all .2s;}
   .unit-card:hover{border-color:var(--brand);background:var(--bg-hover);}
   .unit-card.unassigned{border-color:rgba(239,68,68,.4);}
   .unit-card.unassigned .ucode-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-left:2px;flex-shrink:0;}
   .unit-card:not(.unassigned) .ucode-dot{display:none;}
-
   .ucode{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;min-width:34px;}
   .ucode.officer{color:var(--accent-gold);}
   .ucode.nco{color:var(--accent-cyan);}
   .ucode.command{color:var(--brand);}
-
   .tbadge{font-size:9px;padding:1px 5px;border-radius:8px;font-weight:700;}
   .b-speed{background:rgba(59,130,246,.18);color:var(--accent-blue);border:1px solid rgba(59,130,246,.4);}
   .b-bike{background:rgba(245,158,11,.18);color:var(--accent-gold);border:1px solid rgba(245,158,11,.4);}
   .b-raptor{background:rgba(6,182,212,.18);color:var(--accent-cyan);border:1px solid rgba(6,182,212,.4);}
-
   .udel{margin-right:auto;opacity:0;transition:opacity .2s;background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;padding:0 2px;}
   .unit-card:hover .udel{opacity:1;}
   #sb-ctrl{padding:8px 10px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;}
 
-  /* ── MAIN ── */
+  /* MAIN */
   #main{overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
-
-  /* Stats */
   .stats-strip{background:var(--bg-panel);border:1px solid var(--brand-border);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
   .stat-ttl{font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:1px;}
   .sdiv{width:1px;height:28px;background:var(--brand-border);}
@@ -133,18 +107,27 @@
   .sv-bike{color:var(--accent-gold);}
   .sv-raptor{color:var(--accent-cyan);}
 
-  /* Command Panel */
-  #command-panel{background:var(--bg-panel);border:1px solid var(--brand-border);border-radius:8px;overflow:hidden;}
-  .command-hdr{padding:9px 14px;border-bottom:1px solid var(--brand-border);background:var(--brand-dim);display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
-  .command-hdr-title{color:var(--brand);}
-  .cmd-cnt{font-size:10px;background:var(--brand-dim);color:var(--brand);border:1px solid var(--brand-border);border-radius:10px;padding:1px 7px;}
-  .cmd-units{display:flex;flex-wrap:wrap;gap:4px;min-height:44px;background:rgba(117,48,197,.03);border:1px dashed var(--brand-border);border-radius:5px;padding:7px;}
-  .cmd-units.drag-over{outline:2px dashed var(--brand);outline-offset:2px;background:var(--brand-dim);}
+  /* COMMAND / CUSTOM PANELS */
+  .drop-panel{background:var(--bg-panel);border:1px solid var(--brand-border);border-radius:8px;overflow:hidden;margin-bottom:0;}
+  .drop-panel-hdr{padding:8px 12px;border-bottom:1px solid var(--brand-border);background:var(--brand-deep);display:flex;align-items:center;gap:8px;}
+  .drop-panel-title{font-size:12px;font-weight:700;color:var(--brand);flex:1;background:none;border:none;outline:none;font-family:'Cairo',sans-serif;cursor:text;}
+  .drop-panel-title:focus{color:var(--text-main);}
+  .drop-panel-cnt{font-size:10px;background:var(--brand-dim);color:var(--brand);border:1px solid var(--brand-border);border-radius:10px;padding:1px 7px;}
+  .drop-panel-body{padding:8px 12px;}
+  .drop-zone{display:flex;flex-wrap:wrap;gap:4px;min-height:40px;background:var(--brand-deep);border:1px dashed var(--brand-border);border-radius:5px;padding:7px;}
+  .drop-zone.drag-over{outline:2px dashed var(--brand);outline-offset:2px;background:var(--brand-dim);}
   .cmd-chip{display:flex;align-items:center;gap:4px;background:var(--bg-card);border-radius:4px;padding:3px 8px;border:1px solid var(--brand-border);cursor:grab;transition:all .15s;font-size:11px;}
   .cmd-chip:hover{border-color:var(--brand);background:var(--brand-dim);}
   .cmd-empty{font-size:10px;color:var(--text-muted);font-style:italic;padding:2px 3px;}
 
-  /* Cases Panel */
+  /* PANELS ROW */
+  .panels-row{display:flex;gap:8px;}
+  .panels-row .drop-panel{flex:1;}
+  .custom-panels-section{display:flex;flex-direction:column;gap:8px;}
+  .custom-panels-row{display:flex;gap:8px;}
+  .custom-panels-row .drop-panel{flex:1;}
+
+  /* CASES */
   #cases-panel{background:var(--bg-panel);border:1px solid var(--brand-border);border-radius:8px;overflow:hidden;}
   .panel-hdr{padding:9px 14px;border-bottom:1px solid var(--brand-border);display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:1px;}
   .cases-list{display:flex;flex-direction:column;gap:1px;padding:5px;}
@@ -154,12 +137,12 @@
   .case-name{font-size:13px;font-weight:600;}
   .case-cnt{margin-right:auto;font-size:10px;color:var(--text-muted);background:var(--brand-dim);border:1px solid var(--brand-border);padding:1px 7px;border-radius:8px;}
 
-  /* Zones */
+  /* ZONES */
   #zones-outer{display:grid;grid-template-columns:180px 1fr;gap:10px;align-items:start;}
   .heli-col{display:flex;flex-direction:column;gap:6px;}
   .heli-title{font-size:12px;font-weight:700;color:var(--brand);display:flex;align-items:center;gap:6px;}
   .zdot{width:8px;height:8px;border-radius:50%;}
-  .heli-drop{background:var(--brand-dim);border:1px solid var(--brand-border);border-radius:7px;min-height:70px;padding:8px;display:flex;flex-direction:column;gap:4px;}
+  .heli-drop{background:var(--brand-dim);border:1px solid var(--brand-border);border-radius:7px;min-height:70px;padding:8px;}
   .heli-drop.drag-over{outline:2px dashed var(--brand);outline-offset:2px;}
   #zones-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:start;}
   .zone-wrapper{display:flex;flex-direction:column;gap:4px;}
@@ -169,8 +152,6 @@
   .zone-vtag-speed{background:rgba(59,130,246,.18);color:var(--accent-blue);border:1px solid rgba(59,130,246,.3);}
   .zone-vtag-bike{background:rgba(245,158,11,.18);color:var(--accent-gold);border:1px solid rgba(245,158,11,.3);}
   .zone-vtag-raptor{background:rgba(6,182,212,.18);color:var(--accent-cyan);border:1px solid rgba(6,182,212,.3);}
-
-  /* Section boxes */
   .sec{border-radius:6px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.01);min-height:44px;padding:6px;transition:all .15s;}
   .sec.free{background:var(--sec-free-bg);border-color:var(--sec-free-bd);}
   .sec.case{background:var(--sec-case-bg);border-color:var(--sec-case-bd);}
@@ -181,8 +162,6 @@
   .sec.case .sec-lbl{color:var(--brand);}
   .sec.jail .sec-lbl{color:var(--purple);}
   .sec-units{display:flex;flex-wrap:wrap;gap:3px;}
-
-  /* Chips */
   .uchip{display:flex;align-items:center;gap:4px;background:var(--bg-card);border-radius:4px;padding:2px 7px;border:1px solid var(--border);cursor:pointer;transition:all .15s;font-size:11px;}
   .uchip:hover{border-color:var(--brand);background:var(--brand-dim);}
   .uchip.partner{border-style:dashed;border-color:var(--brand);}
@@ -193,7 +172,26 @@
   .ccode.command{color:var(--brand);}
   .ehint{font-size:10px;color:var(--text-muted);font-style:italic;padding:2px;}
 
-  /* Modal */
+  /* NOTES LOG */
+  #notes-panel{background:var(--bg-panel);border:1px solid var(--brand-border);border-radius:8px;overflow:hidden;}
+  .notes-hdr{padding:9px 14px;border-bottom:1px solid var(--brand-border);display:flex;align-items:center;gap:8px;}
+  .notes-hdr-title{font-size:12px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:1px;flex:1;}
+  .notes-body{padding:10px 12px;display:flex;flex-direction:column;gap:8px;}
+  .note-add-form{display:flex;flex-direction:column;gap:6px;background:var(--brand-deep);border:1px solid var(--brand-border);border-radius:6px;padding:8px;}
+  .note-add-row{display:flex;gap:6px;}
+  .note-item{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:8px 10px;display:flex;flex-direction:column;gap:4px;position:relative;transition:all .15s;}
+  .note-item:hover{border-color:var(--brand-border);}
+  .note-meta{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--text-muted);}
+  .note-title{font-size:12px;font-weight:700;color:var(--brand);}
+  .note-body{font-size:11px;color:var(--text-dim);line-height:1.5;}
+  .note-plate{display:inline-flex;align-items:center;gap:4px;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.35);border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Orbitron',sans-serif;color:var(--accent-cyan);font-weight:700;margin-top:2px;}
+  .note-tag{font-size:9px;padding:1px 6px;border-radius:8px;font-weight:700;background:var(--brand-dim);color:var(--brand);border:1px solid var(--brand-border);}
+  .note-del{position:absolute;left:8px;top:8px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;opacity:0;transition:opacity .2s;}
+  .note-item:hover .note-del{opacity:1;}
+  .note-del:hover{color:var(--red);}
+  .notes-list{display:flex;flex-direction:column;gap:5px;max-height:220px;overflow-y:auto;}
+
+  /* MODAL */
   .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;}
   .modal{background:var(--bg-panel);border:1px solid var(--brand-border);border-radius:11px;padding:18px;min-width:320px;max-width:520px;width:100%;max-height:86vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 40px var(--brand-dim);animation:mIn .18s ease;}
   @keyframes mIn{from{opacity:0;transform:scale(.94) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
@@ -208,43 +206,35 @@
   .u-sel-chip:hover{border-color:var(--brand);background:var(--brand-dim);}
   .u-sel-chip.selected{background:var(--brand-dim);border-color:var(--brand);color:var(--brand);}
   .u-sel-chip.sel-finish{background:rgba(34,197,94,.2);border-color:var(--green);color:var(--green);}
-
-  /* Context Menu */
   .ctx-menu{position:fixed;background:var(--bg-panel);border:1px solid var(--brand-border);border-radius:7px;padding:4px;z-index:200;min-width:155px;box-shadow:0 14px 38px rgba(0,0,0,.6);animation:mIn .14s ease;}
   .ctx-item{padding:6px 11px;border-radius:4px;font-size:12px;cursor:pointer;transition:background .1s;display:flex;align-items:center;gap:7px;}
   .ctx-item:hover{background:var(--brand-dim);color:var(--brand);}
   .ctx-item.danger{color:var(--red);}
   .ctx-item.danger:hover{background:rgba(239,68,68,.1);color:var(--red);}
   .ctx-div{height:1px;background:var(--brand-border);margin:3px 0;}
-
-  /* Wave badges */
   .wbadge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;border:2px solid var(--brand);color:var(--brand);background:var(--brand-dim);cursor:pointer;transition:all .2s;}
   .wbadge:hover,.wbadge.sel{background:var(--brand);color:#fff;box-shadow:0 0 12px var(--brand-glow);}
   .wbadge.dis{opacity:.2;cursor:not-allowed;border-color:var(--text-muted);color:var(--text-muted);background:transparent;}
   .wbadge.dis:hover{background:transparent;color:var(--text-muted);box-shadow:none;}
-
   .ops-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
   .type-grid{display:flex;gap:6px;flex-wrap:wrap;}
   .type-opt{flex:1;min-width:68px;padding:7px;text-align:center;background:var(--bg-card);border:1px solid var(--border);border-radius:5px;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s;}
   .type-opt:hover{border-color:var(--brand);background:var(--brand-dim);}
   .type-opt.sel{border-color:var(--brand);background:var(--brand-dim);color:var(--brand);}
   .phint{font-size:11px;color:var(--brand);background:var(--brand-dim);border:1px solid var(--brand-border);border-radius:4px;padding:4px 8px;}
-
   #copy-btn{background:linear-gradient(135deg,var(--brand),#1d4ed8);color:#fff;border:none;border-radius:6px;padding:7px 16px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;}
   #copy-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px var(--brand-glow);}
-
   #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(16px);padding:9px 18px;border-radius:7px;font-weight:700;font-size:12px;z-index:999;opacity:0;transition:all .28s;border:1px solid transparent;}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
   .drag-ghost{position:fixed;pointer-events:none;z-index:9999;background:var(--bg-card);border:1px solid var(--brand);border-radius:5px;padding:4px 9px;font-size:11px;font-family:'Orbitron',sans-serif;font-weight:700;color:var(--brand);box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;transition:opacity .1s;}
   .drag-ghost.vis{opacity:.9;}
-
   @keyframes hlPulse{0%,100%{box-shadow:0 0 0 0 var(--brand-glow);}50%{box-shadow:0 0 0 4px transparent;}}
   .uchip.highlight{animation:hlPulse 1s ease 3;}
   .unit-card.highlight{animation:hlPulse 1s ease 3;border-color:var(--brand)!important;}
-
   .handover-box{background:var(--brand-dim);border:1px solid var(--brand-border);border-radius:6px;padding:10px 12px;margin-top:10px;}
   .handover-done-strip{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.3);border-radius:6px;padding:8px 12px;margin-top:10px;font-size:12px;color:var(--green);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .plate-input-box{background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.3);border-radius:6px;padding:10px 12px;margin-top:8px;}
+  .plate-input-box .m-lbl{color:var(--accent-cyan);}
 </style>
 </head>
 <body>
@@ -281,6 +271,10 @@
       <button class="btn" onclick="addUnit()" style="padding:5px 9px">+</button>
     </div>
   </div>
+  <!-- sidebar search for units -->
+  <div class="sb-search-box">
+    <input id="sb-search" placeholder="🔍 بحث في القائمة..." oninput="renderSidebar()">
+  </div>
   <div id="units-list"></div>
   <div id="sb-ctrl">
     <button class="btn btn-orange" onclick="openNewCaseModal()" style="width:100%;font-size:12px">إنشاء حالة جديدة</button>
@@ -300,23 +294,60 @@
     <div class="stat-item"><div class="stat-info"><div class="stat-lbl">رابتر</div><div class="stat-val sv-raptor" id="st-raptor">0</div></div></div>
   </div>
 
-  <div id="command-panel">
-    <div class="command-hdr">
-      <span>⭐</span>
-      <span class="command-hdr-title">الضباط والقيادة</span>
-      <span class="cmd-cnt" id="cmd-cnt">0</span>
-      <span style="font-size:10px;color:var(--text-muted);margin-right:auto">الضباط الحاليين</span>
+  <!-- Command + 2 custom panels in a row -->
+  <div class="panels-row">
+    <!-- قسم الضباط -->
+    <div class="drop-panel" id="panel-command">
+      <div class="drop-panel-hdr">
+        <span>⭐</span>
+        <span class="drop-panel-title" style="color:var(--brand);font-size:12px;font-weight:700;">الضباط والقيادة</span>
+        <span class="drop-panel-cnt" id="cmd-cnt">0</span>
+        <span style="font-size:9px;color:var(--text-muted)">≤199</span>
+      </div>
+      <div class="drop-panel-body">
+        <div class="drop-zone" id="cmd-command"
+          ondragover="event.preventDefault();this.classList.add('drag-over')"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="dropToCommand(event)">
+          <span class="cmd-empty" id="cmd-command-empty">اسحب هنا اي ضابط فما فوق</span>
+        </div>
+      </div>
     </div>
-    <div style="padding:10px 12px;">
-      <div class="cmd-units" id="cmd-command"
-        ondragover="event.preventDefault();this.classList.add('drag-over')"
-        ondragleave="this.classList.remove('drag-over')"
-        ondrop="dropToCommand(event)">
-        <span class="cmd-empty" id="cmd-command-empty">اسحب هنا اي ضابط فما فوق</span>
+    <!-- قسم مخصص 1 -->
+    <div class="drop-panel" id="panel-custom1">
+      <div class="drop-panel-hdr">
+        <span>📌</span>
+        <input class="drop-panel-title inp" id="custom1-name" value="قسم مخصص ١" style="background:none;border:none;box-shadow:none;padding:0;font-size:12px;font-weight:700;" onchange="saveCustomPanelNames()">
+        <span class="drop-panel-cnt" id="custom1-cnt">0</span>
+      </div>
+      <div class="drop-panel-body">
+        <div class="drop-zone" id="custom1-zone"
+          ondragover="event.preventDefault();this.classList.add('drag-over')"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="dropToCustomPanel(event,'custom1')">
+          <span class="cmd-empty" id="custom1-empty">اسحب وحدة هنا</span>
+        </div>
+      </div>
+    </div>
+    <!-- قسم مخصص 2 -->
+    <div class="drop-panel" id="panel-custom2">
+      <div class="drop-panel-hdr">
+        <span>📌</span>
+        <input class="drop-panel-title inp" id="custom2-name" value="قسم مخصص ٢" style="background:none;border:none;box-shadow:none;padding:0;font-size:12px;font-weight:700;" onchange="saveCustomPanelNames()">
+        <span class="drop-panel-cnt" id="custom2-cnt">0</span>
+      </div>
+      <div class="drop-panel-body">
+        <div class="drop-zone" id="custom2-zone"
+          ondragover="event.preventDefault();this.classList.add('drag-over')"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="dropToCustomPanel(event,'custom2')">
+          <span class="cmd-empty" id="custom2-empty">اسحب وحدة هنا</span>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Cases -->
   <div id="cases-panel">
     <div class="panel-hdr">الحالات القائمة <span id="cases-count" style="font-size:11px;color:var(--text-muted)">لا توجد</span></div>
     <div class="cases-list" id="cases-list">
@@ -324,6 +355,7 @@
     </div>
   </div>
 
+  <!-- Zones -->
   <div id="zones-outer">
     <div class="heli-col">
       <div class="heli-title"><span class="zdot" style="background:var(--brand)"></span>حرة هيلي</div>
@@ -337,6 +369,33 @@
     </div>
     <div id="zones-grid"></div>
   </div>
+
+  <!-- Notes Log -->
+  <div id="notes-panel">
+    <div class="notes-hdr">
+      <span style="font-size:14px">📋</span>
+      <span class="notes-hdr-title">سجل الملاحظات والبلاغات</span>
+      <button class="btn btn-danger btn-sm" onclick="clearAllNotes()" style="font-size:10px">🗑 حذف الكل</button>
+    </div>
+    <div class="notes-body">
+      <div class="note-add-form">
+        <div class="note-add-row">
+          <input class="inp" id="note-title" placeholder="اسم / عنوان البلاغ" style="flex:1">
+          <select class="inp" id="note-tag" style="width:110px">
+            <option value="ملاحظة">ملاحظة</option>
+            <option value="بلاغ">بلاغ</option>
+            <option value="تعميم">تعميم</option>
+            <option value="لوحة مركبة">🚗 لوحة مركبة</option>
+          </select>
+        </div>
+        <textarea class="inp" id="note-body" placeholder="تفاصيل / وصف..." rows="2" style="resize:none;font-size:11px"></textarea>
+        <button class="btn btn-brand btn-sm" onclick="addNote()" style="align-self:flex-start">+ إضافة</button>
+      </div>
+      <div class="notes-list" id="notes-list">
+        <div class="ehint" style="padding:8px;text-align:center">لا توجد ملاحظات</div>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
 
@@ -349,10 +408,19 @@
 const ZONES=['الوسط','الجنوب','الشمال','الغرب','الشرق'];
 const CASE_TYPES={'سرقة بقالة':5,'سرقة صراف':3,'سرقة كاشير':5,'سرقة بنك':8,'سرقة مجوهرات':7,'أخرى':null};
 const VALID_WAVES=[2,4,5,6,7,8];
-const LS_KEY='police_ops_v5';
+const LS_KEY='police_ops_v6';
 
-let state=loadState()||{units:[],ops:{name:'',code:'',depName:'',depCode:'',from:'',to:'',handoverName:'',handoverCode:'',handoverDone:false},cases:[]};
+let state=loadState()||{
+  units:[],
+  ops:{name:'',code:'',depName:'',depCode:'',from:'',to:'',handoverName:'',handoverCode:'',handoverDone:false},
+  cases:[],
+  notes:[],
+  customPanels:{custom1:{name:'قسم مخصص ١'},custom2:{name:'قسم مخصص ٢'}}
+};
+// migrate
 if(!state.ops.hasOwnProperty('handoverDone')){state.ops.handoverName='';state.ops.handoverCode='';state.ops.handoverDone=false;}
+if(!state.notes)state.notes=[];
+if(!state.customPanels)state.customPanels={custom1:{name:'قسم مخصص ١'},custom2:{name:'قسم مخصص ٢'}};
 
 function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}catch(e){}}
 function loadState(){try{const s=localStorage.getItem(LS_KEY);return s?JSON.parse(s):null;}catch(e){return null;}}
@@ -375,13 +443,15 @@ function showToast(msg,ok=true){
   t.style.borderColor=ok?'var(--green)':'var(--red)';t.style.color=ok?'var(--green)':'var(--red)';
   t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);
 }
+function now(){return new Date().toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});}
 
+// ── ADD UNIT ──
 function addUnit(){
   const ce=document.getElementById('new-code'),te=document.getElementById('new-type');
   const code=parseInt(ce.value);
   if(!code||code<100){showToast('أدخل كوداً صحيحاً',false);return;}
   if(state.units.find(u=>u.code===code)){showToast('الكود موجود مسبقاً',false);return;}
-  state.units.push({id:uid(),code,type:te.value,location:'sidebar',zone:null,section:'free',partnerId:null,caseId:null,prevZone:null,commandSlot:null});
+  state.units.push({id:uid(),code,type:te.value,location:'sidebar',zone:null,section:'free',partnerId:null,caseId:null,prevZone:null,commandSlot:null,customPanel:null});
   ce.value='';saveState();render();
 }
 function deleteFromSidebar(id){state.units=state.units.filter(u=>u.id!==id);saveState();render();}
@@ -392,15 +462,71 @@ function clearSidebarUnits(){
 }
 function resetAllUnits(){
   if(!confirm('إرجاع جميع الوحدات إلى القائمة؟'))return;
-  state.units.forEach(u=>{u.location='sidebar';u.zone=null;u.section='free';u.partnerId=null;u.caseId=null;u.prevZone=null;u.commandSlot=null;});
+  state.units.forEach(u=>{u.location='sidebar';u.zone=null;u.section='free';u.partnerId=null;u.caseId=null;u.prevZone=null;u.commandSlot=null;u.customPanel=null;});
   state.cases=[];saveState();render();showToast('تم إرجاع جميع الوحدات ✓');
 }
 
-function render(){renderSidebar();renderZones();renderCases();renderStats();renderCommand();}
+// ── CUSTOM PANELS ──
+function saveCustomPanelNames(){
+  const n1=document.getElementById('custom1-name')?.value.trim()||'قسم مخصص ١';
+  const n2=document.getElementById('custom2-name')?.value.trim()||'قسم مخصص ٢';
+  state.customPanels.custom1.name=n1;
+  state.customPanels.custom2.name=n2;
+  saveState();
+}
+function initCustomPanelNames(){
+  const el1=document.getElementById('custom1-name');
+  const el2=document.getElementById('custom2-name');
+  if(el1)el1.value=state.customPanels.custom1.name;
+  if(el2)el2.value=state.customPanels.custom2.name;
+}
+
+// ── NOTES ──
+function addNote(){
+  const title=(document.getElementById('note-title')?.value||'').trim();
+  const body=(document.getElementById('note-body')?.value||'').trim();
+  const tag=document.getElementById('note-tag')?.value||'ملاحظة';
+  if(!title&&!body){showToast('أدخل عنوان أو وصف',false);return;}
+  state.notes.unshift({id:uid(),title,body,tag,time:now()});
+  document.getElementById('note-title').value='';
+  document.getElementById('note-body').value='';
+  saveState();renderNotes();showToast('تمت إضافة الملاحظة ✓');
+}
+function addNoteFromPlate(plate,caseLabel){
+  state.notes.unshift({id:uid(),title:`تعميم مركبة — ${caseLabel}`,body:'',tag:'لوحة مركبة',plate,time:now()});
+  saveState();renderNotes();
+}
+function deleteNote(id){state.notes=state.notes.filter(n=>n.id!==id);saveState();renderNotes();}
+function clearAllNotes(){
+  if(!state.notes.length)return;
+  if(!confirm('حذف جميع الملاحظات؟'))return;
+  state.notes=[];saveState();renderNotes();showToast('تم حذف جميع الملاحظات');
+}
+function renderNotes(){
+  const list=document.getElementById('notes-list');if(!list)return;
+  if(!state.notes.length){list.innerHTML='<div class="ehint" style="padding:8px;text-align:center">لا توجد ملاحظات</div>';return;}
+  list.innerHTML=state.notes.map(n=>`
+    <div class="note-item">
+      <button class="note-del" onclick="deleteNote('${n.id}')">✕</button>
+      <div class="note-meta">
+        <span class="note-tag">${n.tag}</span>
+        <span>${n.time||''}</span>
+      </div>
+      ${n.title?`<div class="note-title">${n.title}</div>`:''}
+      ${n.body?`<div class="note-body">${n.body}</div>`:''}
+      ${n.plate?`<div class="note-plate">🚗 ${n.plate}</div>`:''}
+    </div>`).join('');
+}
+
+// ── RENDER ──
+function render(){renderSidebar();renderZones();renderCases();renderStats();renderCommand();renderCustomPanels();renderNotes();}
 
 function renderSidebar(){
-  const su=state.units.filter(u=>u.location==='sidebar');
-  document.getElementById('sb-count').textContent=su.length;
+  const q=(document.getElementById('sb-search')?.value||'').trim();
+  let su=state.units.filter(u=>u.location==='sidebar');
+  if(q)su=su.filter(u=>String(u.code).includes(q));
+  const total=state.units.filter(u=>u.location==='sidebar').length;
+  document.getElementById('sb-count').textContent=total;
   document.getElementById('units-list').innerHTML=su.length===0
     ?'<div class="ehint" style="padding:10px;text-align:center">لا توجد وحدات</div>'
     :su.map(u=>`
@@ -423,10 +549,9 @@ function renderStats(){
   document.getElementById('st-raptor').textContent=dep.filter(u=>u.type==='raptor').length;
 }
 
-function renderCommand(){
-  const units=state.units.filter(u=>u.location==='command');
-  const container=document.getElementById('cmd-command');
-  const emptyEl=document.getElementById('cmd-command-empty');
+function renderDropZone(containerId,emptyId,cntId,units){
+  const container=document.getElementById(containerId);
+  const emptyEl=document.getElementById(emptyId);
   if(!container)return;
   Array.from(container.querySelectorAll('.cmd-chip')).forEach(el=>el.remove());
   if(units.length===0){if(emptyEl)emptyEl.style.display='';}
@@ -436,13 +561,26 @@ function renderCommand(){
       const chip=document.createElement('div');
       chip.className='cmd-chip';chip.draggable=true;
       chip.innerHTML=`<span class="ccode ${codeClass(u.code)}">${u.code}</span>${getTypeBadge(u.type)}`;
-      chip.onclick=(e)=>{e.stopPropagation();openCommandChipMenu(e,u.id);};
-      chip.addEventListener('dragstart',e=>startDrag(e,u.id,'command'));
+      chip.onclick=(e)=>{e.stopPropagation();openGenericChipMenu(e,u.id);};
+      chip.addEventListener('dragstart',e=>startDrag(e,u.id,'panel'));
       chip.addEventListener('dragend',endDrag);
       container.appendChild(chip);
     });
   }
-  document.getElementById('cmd-cnt').textContent=units.length;
+  if(cntId)document.getElementById(cntId).textContent=units.length;
+}
+
+function renderCommand(){
+  const units=state.units.filter(u=>u.location==='command');
+  renderDropZone('cmd-command','cmd-command-empty','cmd-cnt',units);
+}
+
+function renderCustomPanels(){
+  const u1=state.units.filter(u=>u.location==='custom1');
+  const u2=state.units.filter(u=>u.location==='custom2');
+  renderDropZone('custom1-zone','custom1-empty','custom1-cnt',u1);
+  renderDropZone('custom2-zone','custom2-empty','custom2-cnt',u2);
+  initCustomPanelNames();
 }
 
 function renderZones(){
@@ -500,7 +638,7 @@ function renderChips(units){
   return html;
 }
 
-// DRAG
+// ── DRAG ──
 let DS={id:null,isPartner:false,from:null};
 const ghost=document.getElementById('drag-ghost');
 document.addEventListener('dragover',e=>{ghost.style.left=(e.clientX+12)+'px';ghost.style.top=(e.clientY+12)+'px';});
@@ -519,15 +657,15 @@ function dropToZone(e,zone,section){
   if(!DS.id)return;
   const u=state.units.find(x=>x.id===DS.id);if(!u)return;
   const ids=DS.isPartner&&u.partnerId?[u.id,u.partnerId]:[u.id];
-  ids.forEach(id=>{const unit=state.units.find(x=>x.id===id);unit.location=zone;unit.zone=zone;unit.section=section;unit.commandSlot=null;});
+  ids.forEach(id=>{const unit=state.units.find(x=>x.id===id);unit.location=zone;unit.zone=zone;unit.section=section;unit.commandSlot=null;unit.customPanel=null;});
   saveState();render();
 }
 function dropToHeli(e){
   e.preventDefault();document.getElementById('zone-heli').classList.remove('drag-over');
   if(!DS.id)return;
   const u=state.units.find(x=>x.id===DS.id);if(!u)return;
-  u.location='heli';u.zone='هيلي';u.section='free';u.commandSlot=null;
-  if(u.partnerId){const p=state.units.find(x=>x.id===u.partnerId);if(p){p.location='heli';p.zone='هيلي';p.section='free';p.commandSlot=null;}}
+  u.location='heli';u.zone='هيلي';u.section='free';u.commandSlot=null;u.customPanel=null;
+  if(u.partnerId){const p=state.units.find(x=>x.id===u.partnerId);if(p){p.location='heli';p.zone='هيلي';p.section='free';p.commandSlot=null;p.customPanel=null;}}
   saveState();render();
 }
 function dropToCommand(e){
@@ -535,15 +673,23 @@ function dropToCommand(e){
   if(!DS.id)return;
   const u=state.units.find(x=>x.id===DS.id);if(!u)return;
   if(parseInt(u.code)>199){showToast('هذا القسم مخصص للضباط فقط',false);return;}
-  u.location='command';u.zone=null;u.section='free';u.commandSlot='command';u.caseId=null;
+  u.location='command';u.zone=null;u.section='free';u.commandSlot='command';u.caseId=null;u.customPanel=null;
   if(u.partnerId){const p=state.units.find(x=>x.id===u.partnerId);if(p){
     if(parseInt(p.code)>199)showToast('الوحدة المشتركة ليست ضابطاً',false);
-    else{p.location='command';p.zone=null;p.section='free';p.commandSlot='command';p.caseId=null;}
+    else{p.location='command';p.zone=null;p.section='free';p.commandSlot='command';p.caseId=null;p.customPanel=null;}
   }}
   saveState();render();
 }
+function dropToCustomPanel(e,panelId){
+  e.preventDefault();document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  if(!DS.id)return;
+  const u=state.units.find(x=>x.id===DS.id);if(!u)return;
+  u.location=panelId;u.zone=null;u.section='free';u.commandSlot=null;u.caseId=null;u.customPanel=panelId;
+  if(u.partnerId){const p=state.units.find(x=>x.id===u.partnerId);if(p){p.location=panelId;p.zone=null;p.section='free';p.commandSlot=null;p.caseId=null;p.customPanel=panelId;}}
+  saveState();render();
+}
 
-// CTX
+// ── CTX MENUS ──
 let ctxEl=null;
 function openChipMenu(e,id){
   e.stopPropagation();closeCtxMenu();
@@ -558,7 +704,7 @@ function openChipMenu(e,id){
   menu.innerHTML=`${caseOpts}${pullBtn}<div class="ctx-item" onclick="openVehicleChange('${id}');closeCtxMenu()">تغيير المركبة</div>${pBtn}<div class="ctx-div"></div><div class="ctx-item danger" onclick="returnToSidebar('${id}');closeCtxMenu()">↩ إرجاع للقائمة</div>`;
   document.body.appendChild(menu);ctxEl=menu;
 }
-function openCommandChipMenu(e,id){
+function openGenericChipMenu(e,id){
   e.stopPropagation();closeCtxMenu();
   const u=state.units.find(x=>x.id===id);if(!u)return;
   const menu=document.createElement('div');menu.className='ctx-menu';
@@ -574,7 +720,7 @@ function closeCtxMenu(){if(ctxEl){ctxEl.remove();ctxEl=null;}}
 function returnToSidebar(id){
   const u=state.units.find(x=>x.id===id);if(!u)return;
   const ids=u.partnerId?[id,u.partnerId]:[id];
-  ids.forEach(uid=>{const unit=state.units.find(x=>x.id===uid);unit.location='sidebar';unit.zone=null;unit.section='free';unit.partnerId=null;unit.caseId=null;unit.commandSlot=null;});
+  ids.forEach(uid=>{const unit=state.units.find(x=>x.id===uid);unit.location='sidebar';unit.zone=null;unit.section='free';unit.partnerId=null;unit.caseId=null;unit.commandSlot=null;unit.customPanel=null;});
   saveState();render();
 }
 function removePartner(id){
@@ -602,7 +748,7 @@ function setPartner(a,b){
   if(!u1||!u2)return;u1.partnerId=b;u2.partnerId=a;saveState();render();
 }
 
-// OPS MODAL
+// ── OPS MODAL ──
 function openOpsModal(){
   const modal=createModal('⚙ إعدادات الاستلام والتسليم');
   const handoverSection=state.ops.handoverDone
@@ -653,12 +799,12 @@ function resetHandover(){
   saveState();closeModal();openOpsModal();
 }
 
-// CASES
+// ── CASES ──
 function getNextWave(){const used=new Set(state.cases.map(c=>c.wave));for(const w of VALID_WAVES)if(!used.has(w))return w;return VALID_WAVES[VALID_WAVES.length-1];}
 
 function openNewCaseModal(){
   const nw=getNextWave();
-  const baseUnits=state.units.filter(u=>u.location!=='sidebar'&&u.location!=='command'&&u.section==='free'&&!u.caseId);
+  const baseUnits=state.units.filter(u=>u.location!=='sidebar'&&u.location!=='command'&&u.location!=='custom1'&&u.location!=='custom2'&&u.section==='free'&&!u.caseId);
   const seen=new Set();const groups=[];
   for(const u of baseUnits){
     if(seen.has(u.id))continue;seen.add(u.id);
@@ -768,9 +914,37 @@ function openCaseDetail(cid){
     </div>
     <div class="m-acts">
       <button class="btn btn-danger" onclick="closeModal();openFinishCase('${cid}')">إنهاء الحالة</button>
+      <button class="btn btn-cyan" onclick="openPlateModal('${cid}')">🚗 تعميم على مركبة</button>
       <button class="btn btn-ghost" onclick="closeModal()">إغلاق</button>
     </div>`;
 }
+
+// ── PLATE MODAL ──
+function openPlateModal(cid){
+  const c=state.cases.find(x=>x.id===cid);if(!c)return;
+  const label=c.customType||c.type;
+  const modal=createModal('🚗 تعميم على مركبة');
+  modal.innerHTML+=`
+    <div class="plate-input-box">
+      <div class="m-lbl">لوحة المركبة</div>
+      <input class="inp" id="plate-val" placeholder="مثال: أ ب ج 1234" style="margin-bottom:8px;text-align:center;font-size:15px;font-family:'Orbitron',sans-serif;letter-spacing:2px;">
+      <div style="font-size:11px;color:var(--text-muted)">الحالة: <b style="color:var(--brand)">${label} م${c.wave}</b></div>
+    </div>
+    <div class="m-acts">
+      <button class="btn btn-cyan" onclick="savePlate('${cid}')">حفظ في السجل</button>
+      <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+    </div>`;
+}
+function savePlate(cid){
+  const plate=(document.getElementById('plate-val')?.value||'').trim();
+  if(!plate){showToast('أدخل لوحة المركبة',false);return;}
+  const c=state.cases.find(x=>x.id===cid);
+  const label=c?`${c.customType||c.type} م${c.wave}`:'';
+  addNoteFromPlate(plate,label);
+  closeModal();
+  showToast(`تم حفظ اللوحة ${plate} في السجل ✓`);
+}
+
 function pullFromCase(id){
   const u=state.units.find(x=>x.id===id);if(!u||!u.caseId)return;
   const c=state.cases.find(x=>x.id===u.caseId);if(c)c.unitIds=c.unitIds.filter(x=>x!==id);
@@ -817,7 +991,7 @@ function finishCase(cid){
   closeModal();saveState();render();showToast('تم إنهاء الحالة ✓');
 }
 
-// MODAL HELPERS
+// ── MODAL HELPERS ──
 let modalEl=null;
 function createModal(title){
   closeModal();
@@ -831,10 +1005,12 @@ function createModal(title){
 }
 function closeModal(){if(modalEl){modalEl.remove();modalEl=null;}}
 
-// GLOBAL SEARCH
+// ── GLOBAL SEARCH ──
 function getUnitLocation(u){
   if(u.location==='sidebar')return'القائمة';
   if(u.location==='command')return'الضباط والقيادة';
+  if(u.location==='custom1')return state.customPanels.custom1.name;
+  if(u.location==='custom2')return state.customPanels.custom2.name;
   if(u.location==='heli')return'هيلي';
   const sec={free:'شاغر',case:'في حالة',jail:'زنزانة'};
   return`${u.zone||'?'} / ${sec[u.section]||u.section}`;
@@ -865,10 +1041,7 @@ function highlightUnit(id){
   },80);
 }
 
-// ══════════════════════════════════════════════════
-//  COPY MESSAGE — كل وحدة في سطر مستقل
-//  الوحدات المشتركة فقط تُدمج معاً في نفس السطر
-// ══════════════════════════════════════════════════
+// ── COPY ──
 function copyMessage(){
   const dep=state.units.filter(u=>u.location!=='sidebar');
   const offs=dep.filter(u=>isOfficer(u.code)).sort((a,b)=>a.code-b.code);
@@ -876,66 +1049,32 @@ function copyMessage(){
   const offStr=offs.map(u=>u.code).join(' - ')||'—';
   const ncoStr=ncos.map(u=>u.code).join(' - ')||'—';
   const resp=ncos.length>0?ncos[0].code:'—';
-  const handoverLine=state.ops.handoverDone
-    ?`${state.ops.handoverName||'—'} ${state.ops.handoverCode||''}`.trim():'';
-
+  const handoverLine=state.ops.handoverDone?`${state.ops.handoverName||'—'} ${state.ops.handoverCode||''}`.trim():'';
   const lines=[];
-
-  // هيلي
   const hu=state.units.filter(u=>u.location==='heli');
-  lines.push(`| حره | هيلي | ${hu.map(u=>u.code).join(' + ')}`);
-  lines.push('');
-
-  // لكل منطقة: كل وحدة (أو زوج مشترك) في سطر مستقل
+  lines.push(`| حره | هيلي | ${hu.map(u=>u.code).join(' + ')}`);lines.push('');
   ZONES.forEach((zone,idx)=>{
     const zu=state.units.filter(u=>u.zone===zone);
     const done=new Set();
-
-    // نبني قائمة "entries" مرتبة: كل entry = { type, label }
     const entries=[];
     for(const u of zu){
-      if(done.has(u.id))continue;
-      done.add(u.id);
+      if(done.has(u.id))continue;done.add(u.id);
       let label=String(u.code);
-      let type=u.type==='raptor'?'car':u.type; // raptor يُعامل كمركبة
-      if(u.partnerId){
-        const p=state.units.find(x=>x.id===u.partnerId);
-        if(p&&!done.has(p.id)){
-          done.add(p.id);
-          label=`${u.code} + ${p.code}`;
-          // نوع الزوج: نستخدم نوع الأول، raptor→car
-          type=u.type==='raptor'?'car':u.type;
-        }
-      }
+      let type=u.type==='raptor'?'car':u.type;
+      if(u.partnerId){const p=state.units.find(x=>x.id===u.partnerId);if(p&&!done.has(p.id)){done.add(p.id);label=`${u.code} + ${p.code}`;}}
       entries.push({type,label});
     }
-
-    // سطر لكل entry حسب نوعها
     const speeds=entries.filter(e=>e.type==='speed');
     const bikes=entries.filter(e=>e.type==='bike');
     const cars=entries.filter(e=>e.type!=='speed'&&e.type!=='bike');
-
-    // سبيد يونت — كل واحدة سطر
-    for(const e of speeds)
-      lines.push(`| ${zone} | سبيد يونت | ${e.label}`);
-    if(!speeds.length)
-      lines.push(`| ${zone} | سبيد يونت | `);
-
-    // مركبة — كل واحدة سطر
-    for(const e of cars)
-      lines.push(`| ${zone} | مركبة | ${e.label}`);
-    if(!cars.length)
-      lines.push(`| ${zone} | مركبة | `);
-
-    // دباب — كل واحدة سطر
-    for(const e of bikes)
-      lines.push(`| ${zone} | دباب | ${e.label}`);
-    if(!bikes.length)
-      lines.push(`| ${zone} | دباب | `);
-
+    for(const e of speeds)lines.push(`| ${zone} | سبيد يونت | ${e.label}`);
+    if(!speeds.length)lines.push(`| ${zone} | سبيد يونت | `);
+    for(const e of cars)lines.push(`| ${zone} | مركبة | ${e.label}`);
+    if(!cars.length)lines.push(`| ${zone} | مركبة | `);
+    for(const e of bikes)lines.push(`| ${zone} | دباب | ${e.label}`);
+    if(!bikes.length)lines.push(`| ${zone} | دباب | `);
     if(idx<ZONES.length-1){lines.push('');lines.push('');}
   });
-
   const msg=
 `اسم العمليات : ${state.ops.name||'—'} ${state.ops.code||''}
 نائب العمليات : ${state.ops.depName||'—'} ${state.ops.depCode||''}
@@ -952,14 +1091,9 @@ ${lines.join('\n')}
 وقت الاستلام : ${state.ops.from||'—'}
 وقت التسليم : ${state.ops.to||'—'}
 تم التسليم الى : ${handoverLine}`;
-
-  navigator.clipboard.writeText(msg)
-    .then(()=>showToast('تم نسخ الرسالة'))
-    .catch(()=>{
-      const ta=document.createElement('textarea');ta.value=msg;
-      document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
-      showToast('تم نسخ الرسالة');
-    });
+  navigator.clipboard.writeText(msg).then(()=>showToast('تم نسخ الرسالة')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('تم نسخ الرسالة');
+  });
 }
 
 render();
