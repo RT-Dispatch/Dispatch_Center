@@ -579,11 +579,11 @@ function openChipMenu(e,id){
   const x=Math.min(e.clientX,window.innerWidth-165);
   const y=Math.min(e.clientY,window.innerHeight-250);
   menu.style.left=x+'px';menu.style.top=y+'px';
-  let caseOpts=state.cases.map(c=>`<div class="ctx-item" onclick="sendUnitToCase('${id}','${c.id}');closeCtxMenu()">📌 إرسال: ${c.customType||c.type} م${c.wave}</div>`).join('');
+  let caseOpts=state.cases.map(c=>`<div class="ctx-item" onclick="sendUnitToCase('${id}','${c.id}');closeCtxMenu()">إرسال: ${c.customType||c.type} م${c.wave}</div>`).join('');
   if(caseOpts)caseOpts+='<div class="ctx-div"></div>';
   const pullBtn=(u.section==='case'&&u.caseId)?`<div class="ctx-item" onclick="pullFromCase('${id}');closeCtxMenu()">⬅ سحب من الحالة</div>`:'';
   const pBtn=u.partnerId?`<div class="ctx-item" onclick="removePartner('${id}');closeCtxMenu()">🔗 إلغاء مشترك</div>`:`<div class="ctx-item" onclick="openPartnerModal('${id}');closeCtxMenu()">🔗 إضافة مشترك</div>`;
-  menu.innerHTML=`${caseOpts}${pullBtn}<div class="ctx-item" onclick="openVehicleChange('${id}');closeCtxMenu()">🚗 تغيير المركبة</div>${pBtn}<div class="ctx-div"></div><div class="ctx-item danger" onclick="returnToSidebar('${id}');closeCtxMenu()">↩ إرجاع للقائمة</div>`;
+  menu.innerHTML=`${caseOpts}${pullBtn}<div class="ctx-item" onclick="openVehicleChange('${id}');closeCtxMenu()">تغيير المركبة</div>${pBtn}<div class="ctx-div"></div><div class="ctx-item danger" onclick="returnToSidebar('${id}');closeCtxMenu()">↩ إرجاع للقائمة</div>`;
   document.body.appendChild(menu);ctxEl=menu;
 }
 function openCommandChipMenu(e,id){
@@ -593,9 +593,9 @@ function openCommandChipMenu(e,id){
   const x=Math.min(e.clientX,window.innerWidth-165);
   const y=Math.min(e.clientY,window.innerHeight-180);
   menu.style.left=x+'px';menu.style.top=y+'px';
-  let caseOpts=state.cases.map(c=>`<div class="ctx-item" onclick="sendUnitToCase('${id}','${c.id}');closeCtxMenu()">📌 إرسال: ${c.customType||c.type} م${c.wave}</div>`).join('');
+  let caseOpts=state.cases.map(c=>`<div class="ctx-item" onclick="sendUnitToCase('${id}','${c.id}');closeCtxMenu()">إرسال: ${c.customType||c.type} م${c.wave}</div>`).join('');
   if(caseOpts)caseOpts+='<div class="ctx-div"></div>';
-  menu.innerHTML=`${caseOpts}<div class="ctx-item" onclick="openVehicleChange('${id}');closeCtxMenu()">🚗 تغيير المركبة</div><div class="ctx-div"></div><div class="ctx-item danger" onclick="returnToSidebar('${id}');closeCtxMenu()">↩ إرجاع للقائمة</div>`;
+  menu.innerHTML=`${caseOpts}<div class="ctx-item" onclick="openVehicleChange('${id}');closeCtxMenu()">تغيير المركبة</div><div class="ctx-div"></div><div class="ctx-item danger" onclick="returnToSidebar('${id}');closeCtxMenu()">↩ إرجاع للقائمة</div>`;
   document.body.appendChild(menu);ctxEl=menu;
 }
 document.addEventListener('click',closeCtxMenu);
@@ -614,7 +614,7 @@ function removePartner(id){
 }
 function openVehicleChange(id){
   const u=state.units.find(x=>x.id===id);if(!u)return;
-  const modal=createModal('🚗 تغيير المركبة');
+  const modal=createModal('تغيير المركبة');
   modal.innerHTML+=`<div class="type-grid">${['car','speed','bike','raptor'].map(t=>`
     <div class="type-opt ${u.type===t?'sel':''}" onclick="changeVehicle('${id}','${t}');closeModal()">${getTypeLabel(t)}</div>`).join('')}</div>`;
 }
@@ -623,7 +623,7 @@ function openPartnerModal(id){
   const u=state.units.find(x=>x.id===id);if(!u)return;
   const av=state.units.filter(x=>x.id!==id&&x.location===u.location&&x.zone===u.zone&&x.section===u.section&&!x.partnerId);
   if(!av.length){showToast('لا توجد وحدات في نفس الموقع',false);return;}
-  const modal=createModal('🔗 إضافة وحدة مشتركة');
+  const modal=createModal(' إضافة وحدة مشتركة');
   modal.innerHTML+=`<div class="m-lbl">اختر مع ${u.code}</div><div class="u-sel-grid">${av.map(x=>`<div class="u-sel-chip" onclick="setPartner('${id}','${x.id}');closeModal()"><span class="ccode ${codeClass(x.code)}">${x.code}</span>${getTypeBadge(x.type)}</div>`).join('')}</div>`;
 }
 function setPartner(a,b){
@@ -633,7 +633,7 @@ function setPartner(a,b){
 
 // OPS
 function openOpsModal(){
-  const modal=createModal('⚙ إعداد الوردية');
+  const modal=createModal('⚙ إعدادات الإستلام والتسليم');
   modal.innerHTML+=`
     <div class="ops-grid">
       <div><div class="m-lbl">اسم العمليات</div><input class="inp" id="om-n" value="${state.ops.name}" placeholder="الاسم"></div>
@@ -652,7 +652,7 @@ function saveOps(){
   state.ops.depCode=document.getElementById('om-dc').value.trim();
   state.ops.from=document.getElementById('om-f').value.trim();
   state.ops.to=document.getElementById('om-t').value.trim();
-  saveState();closeModal();renderSidebar();showToast('تم حفظ الوردية ✓');
+  saveState();closeModal();renderSidebar();showToast('تم حفظ الإعدادات ✓');
 }
 
 // CASES
