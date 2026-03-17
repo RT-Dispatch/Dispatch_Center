@@ -273,7 +273,7 @@
   </div>
   <!-- sidebar search for units -->
   <div class="sb-search-box">
-    <input id="sb-search" placeholder="🔍 بحث في القائمة..." oninput="renderSidebar()">
+    <input id="sb-search" placeholder="بحث في القائمة..." oninput="renderSidebar()">
   </div>
   <div id="units-list"></div>
   <div id="sb-ctrl">
@@ -373,7 +373,7 @@
   <!-- Notes Log -->
   <div id="notes-panel">
     <div class="notes-hdr">
-      <span style="font-size:14px">📋</span>
+      <span style="font-size:14px"> </span>
       <span class="notes-hdr-title">سجل الملاحظات والبلاغات</span>
       <button class="btn btn-danger btn-sm" onclick="clearAllNotes()" style="font-size:10px">🗑 حذف الكل</button>
     </div>
@@ -385,7 +385,7 @@
             <option value="ملاحظة">ملاحظة</option>
             <option value="بلاغ">بلاغ</option>
             <option value="تعميم">تعميم</option>
-            <option value="لوحة مركبة">🚗 لوحة مركبة</option>
+            <option value="لوحة مركبة">لوحة مركبة</option>
           </select>
         </div>
         <textarea class="inp" id="note-body" placeholder="تفاصيل / وصف..." rows="2" style="resize:none;font-size:11px"></textarea>
@@ -515,7 +515,7 @@ function renderNotes(){
       </div>
       ${n.title?`<div class="note-title">${n.title}</div>`:''}
       ${n.body?`<div class="note-body">${n.body}</div>`:''}
-      ${n.plate?`<div class="note-plate">🚗 ${n.plate}</div>`:''}
+      ${n.plate?`<div class="note-plate">${n.plate}</div>`:''}
     </div>`).join('');
 }
 
@@ -915,7 +915,7 @@ function openCaseDetail(cid){
     </div>
     <div class="m-acts">
       <button class="btn btn-danger" onclick="closeModal();openFinishCase('${cid}')">إنهاء الحالة</button>
-      <button class="btn btn-cyan" onclick="openPlateModal('${cid}')">🚗 تعميم على مركبة</button>
+      <button class="btn btn-cyan" onclick="openPlateModal('${cid}')">تعميم على مركبة</button>
       <button class="btn btn-ghost" onclick="closeModal()">إغلاق</button>
     </div>`;
 }
@@ -924,7 +924,7 @@ function openCaseDetail(cid){
 function openPlateModal(cid){
   const c=state.cases.find(x=>x.id===cid);if(!c)return;
   const label=c.customType||c.type;
-  const modal=createModal('🚗 تعميم على مركبة');
+  const modal=createModal('تعميم على مركبة');
   modal.innerHTML+=`
     <div class="plate-input-box">
       <div class="m-lbl">لوحة المركبة</div>
