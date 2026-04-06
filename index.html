@@ -936,19 +936,52 @@ function openPartnerModal(id){
   const u=state.units.find(x=>x.id===id);if(!u)return;
   const av=state.units.filter(x=>x.id!==id&&x.location===u.location&&x.zone===u.zone&&x.section===u.section&&!x.partnerId);
   if(!av.length){showToast('لا توجد وحدات في نفس الموقع',false);return;}
+  window._partnerA=id;window._partnerB=null;
   const modal=createModal('اضافة وحدة مشتركة');
   modal.innerHTML+=`
-    <div class="m-lbl">اختر مع ${u.code} — سيتم اختيار نوع مركبة واحد للاثنين</div>
-    <div class="u-sel-grid">${av.map(x=>`<div class="u-sel-chip" onclick="openPartnerVehicleModal('${id}','${x.id}');closeModal()"><span class="ccode ${codeClass(x.code)}">${x.code}</span>${getTypeBadge(x.type)}</div>`).join('')}</div>`;
+    <div class="m-sec">
+      <div class="m-lbl">الخطوة 1 — اختر الوحدة المشتركة مع ${u.code}</div>
+      <div class="u-sel-grid" id="partner-unit-grid">
+        ${av.map(x=>`<div class="u-sel-chip" id="pchip-${x.id}" onclick="selectPartnerUnit('${id}','${x.id}')">
+          <span class="ccode ${codeClass(x.code)}">${x.code}</span>${getTypeBadge(x.type)}
+        </div>`).join('')}
+      </div>
+    </div>
+    <div id="partner-vehicle-section" style="display:none">
+      <div class="m-sec">
+        <div class="m-lbl" id="partner-veh-lbl">الخطوة 2 — اختر نوع المركبة للاثنين</div>
+        <div class="type-grid">
+          ${['car','speed','bike','raptor'].map(t=>`
+            <div class="type-opt" id="pvt-${t}" onclick="confirmPartner('${t}')">${getTypeLabel(t)}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="m-acts">
+      <button class="btn btn-ghost" onclick="closeModal()">الغاء</button>
+    </div>`;
 }
-function openPartnerVehicleModal(a,b){
-  const u1=state.units.find(x=>x.id===a),u2=state.units.find(x=>x.id===b);
-  if(!u1||!u2)return;
-  const modal=createModal(`اختر نوع مركبة المشتركة: ${u1.code} + ${u2.code}`);
-  modal.innerHTML+=`
-    <div class="m-lbl">نوع المركبة للوحدتين معاً</div>
-    <div class="type-grid">${['car','speed','bike','raptor'].map(t=>`
-      <div class="type-opt ${u1.type===t?'sel':''}" onclick="setPartnerWithVehicle('${a}','${b}','${t}');closeModal()">${getTypeLabel(t)}</div>`).join('')}</div>`;
+function selectPartnerUnit(aId,bId){
+  window._partnerB=bId;
+  // highlight selected unit
+  document.querySelectorAll('#partner-unit-grid .u-sel-chip').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('pchip-'+bId)?.classList.add('selected');
+  // pre-select vehicle type based on unit a
+  const u=state.units.find(x=>x.id===aId);
+  document.querySelectorAll('.type-opt[id^="pvt-"]').forEach(el=>el.classList.remove('sel'));
+  if(u)document.getElementById('pvt-'+u.type)?.classList.add('sel');
+  // show vehicle step
+  const sec=document.getElementById('partner-vehicle-section');if(sec)sec.style.display='';
+  const u2=state.units.find(x=>x.id===bId);
+  const lbl=document.getElementById('partner-veh-lbl');
+  if(lbl&&u&&u2)lbl.textContent=`الخطوة 2 — اختر نوع المركبة لـ ${u.code} + ${u2.code}`;
+}
+function confirmPartner(type){
+  const a=window._partnerA,b=window._partnerB;
+  if(!a||!b){showToast('اختر الوحدة المشتركة أولاً',false);return;}
+  document.querySelectorAll('.type-opt[id^="pvt-"]').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('pvt-'+type)?.classList.add('sel');
+  setPartnerWithVehicle(a,b,type);
+  closeModal();
 }
 function setPartnerWithVehicle(a,b,type){
   const u1=state.units.find(x=>x.id===a),u2=state.units.find(x=>x.id===b);
@@ -957,7 +990,17 @@ function setPartnerWithVehicle(a,b,type){
   u1.type=type;u2.type=type;
   saveState();render();showToast(`تم ربط ${u1.code} + ${u2.code} كـ ${getTypeLabel(type)}`);
 }
-function setPartner(a,b){openPartnerVehicleModal(a,b);}
+function setPartner(a,b){
+  // direct partner set used from old context — open vehicle picker inline
+  window._partnerA=a;window._partnerB=b;
+  const u1=state.units.find(x=>x.id===a),u2=state.units.find(x=>x.id===b);
+  if(!u1||!u2)return;
+  const modal=createModal(`اختر نوع المركبة: ${u1.code} + ${u2.code}`);
+  modal.innerHTML+=`
+    <div class="m-lbl">نوع المركبة للوحدتين معاً</div>
+    <div class="type-grid">${['car','speed','bike','raptor'].map(t=>`
+      <div class="type-opt ${u1.type===t?'sel':''}" onclick="setPartnerWithVehicle('${a}','${b}','${t}');closeModal()">${getTypeLabel(t)}</div>`).join('')}</div>`;
+}
 
 // ── OPS MODAL ──
 function openOpsModal(){
